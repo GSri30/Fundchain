@@ -57,13 +57,13 @@ export class DashboardComponent implements OnDestroy {
       name : "Test1",
       id : "1",
       type : "Health",
-      description : "This organization....." 
+      description : "This organization....."
     },
     {
       name : "Test2",
       id : "2",
       type : "Education",
-      description : "This organization....." 
+      description : "This organization....."
     }
   ];
   statusCards: string;

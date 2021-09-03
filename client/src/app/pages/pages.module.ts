@@ -8,6 +8,7 @@ import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { AddorgModule } from './addorg/addorg.module';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -24,6 +25,7 @@ import { AddorgModule } from './addorg/addorg.module';
   ],
   declarations: [
     PagesComponent,
+    LoginComponent,
   ],
 })
 export class PagesModule {
