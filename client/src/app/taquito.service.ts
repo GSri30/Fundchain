@@ -14,15 +14,38 @@ export class TaquitoService {
     
 
     constructor() {}
+
+    public async is_connected():Promise<boolean>
+    {
+        let activeAccount;
+        if(this.wallet) activeAccount = await this.wallet.client.getActiveAccount();
+        else return false;
+        if(activeAccount) 
+        {
+            console.log(activeAccount.address);
+            return true;
+        }
+        else return false;
+    }
     
     public async connect_wallet() {
+        this.wallet = new BeaconWallet({ name: 'test' });
         await this.wallet.requestPermissions({
             network: {  
                 type: NetworkType.FLORENCENET
             }
         });
-        this.taquito.setProvider({ wallet: this.wallet });
+        this.taquito.setProvider({ wallet: this.wallet });    
+        return true;
     }
+
+    public async disconnect_wallet(){
+      if(this.wallet)
+      {
+          this.wallet.client.destroy();
+          this.wallet=undefined;
+      }
+    };
 
     public async get_specific_from_transactions(uuid) {
         const userAddress = await this.wallet.getPKH();

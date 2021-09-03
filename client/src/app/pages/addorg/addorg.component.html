@@ -1,0 +1,57 @@
+<ng-container *ngIf=Wallet>
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <nb-card class=card>
+                <nb-card-header>Create Organization</nb-card-header>
+                <nb-card-body>
+                    <div class="full-name-inputs">
+                        <input type="text" nbInput fullWidth placeholder="Name of the cause">
+                        <input type="text" nbInput fullWidth placeholder="Name of the Institution (if any)">
+                    </div>
+                    <textarea rows="5" nbInput fullWidth shape="round" placeholder="Description"></textarea>
+                    <div class="full-name-inputs">
+                        <input type="text" nbInput placeholder="Goal to be reached">
+                        <nb-select placeholder="Currency">
+                            <nb-option value="1">Rupees</nb-option>
+                            <nb-option value="2">Dollars</nb-option>
+                        </nb-select>
+                    </div>
+
+                    <nb-select fullWidth placeholder="Type of the organisation">
+                        <nb-option value="1">Education</nb-option>
+                        <nb-option value="2">Start Ups</nb-option>
+                        <nb-option value="3">Old Age Homes</nb-option>
+                        <nb-option value="3">Health</nb-option>
+                        <nb-option value="3">Rural Development</nb-option>
+                        <nb-option value="3">Nature</nb-option>
+                        <nb-option value="3">Farming</nb-option>
+                        <nb-option value="3">Others</nb-option>
+
+                    </nb-select>
+                    <span>Select Image: </span>
+                    <input nbInput #imageInput type="file" accept="image/*" multiple (change)="processFile(imageInput)">
+                    <br>
+                    <button type="submit" nbButton status="primary">Create</button>
+
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</ng-container>
+<ng-container *ngIf=!Wallet>
+    <nb-card>
+        <nb-card-body>
+            <h2>Please connect your wallet to add an organization!</h2>
+        </nb-card-body>
+    </nb-card>
+</ng-container>
+<!-- 
+//Post Post Screen (Add issue):
+Pictures
+Cause Name
+Institution Associated With (Optional)
+Description
+Goal (Any currency input accepted)
+Type (Dropdown)
+Tags -->

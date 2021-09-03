@@ -10,6 +10,13 @@ interface CardSettings {
   count: number;
 }
 
+class Organization{
+  name : string;
+  id: string;
+  type : string;
+  description : string;
+}
+
 @Component({
   selector: 'ngx-dashboard',
   styleUrls: ['./dashboard.component.scss'],
@@ -45,6 +52,20 @@ export class DashboardComponent implements OnDestroy {
     count: 500,
   };
 
+  orgs : Organization[] = [
+    {
+      name : "Test1",
+      id : "1",
+      type : "Health",
+      description : "This organization....." 
+    },
+    {
+      name : "Test2",
+      id : "2",
+      type : "Education",
+      description : "This organization....." 
+    }
+  ];
   statusCards: string;
 
   commonStatusCardsSet: CardSettings[] = [
@@ -100,5 +121,9 @@ export class DashboardComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  openorg(org : any){
+    console.log(org);
   }
 }

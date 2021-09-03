@@ -1,11 +1,29 @@
-import { Component, OnInit, OnDestroy, Input} from '@angular/core';
-import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
-import { NbSortDirection, NbSortRequest, NbTreeGridDataSource, NbTreeGridDataSourceBuilder } from '@nebular/theme';
+import { UserinfoService } from "./userinfo.service";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from "@angular/core";
+import {
+  NbMediaBreakpointsService,
+  NbMenuService,
+  NbSidebarService,
+  NbThemeService,
+} from "@nebular/theme";
+import {
+  NbSortDirection,
+  NbSortRequest,
+  NbTreeGridDataSource,
+  NbTreeGridDataSourceBuilder,
+} from "@nebular/theme";
 
-import { UserData } from '../../@core/data/users';
-import { LayoutService } from '../../@core/utils';
-import { map, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { UserData } from "../../@core/data/users";
+import { LayoutService } from "../../@core/utils";
+import { map, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
 interface TreeNode<T> {
   data: T;
   children?: TreeNode<T>[];
@@ -14,68 +32,80 @@ interface TreeNode<T> {
 
 interface FSEntry {
   Type: string;
-  Amount : string;
+  Amount: string;
   items?: number;
+  kind: string;
 }
 
 @Component({
-  selector: 'ngx-userinfo',
-  templateUrl: './userinfo.component.html',
-  styleUrls: ['./userinfo.component.scss']
+  selector: "ngx-userinfo",
+  templateUrl: "./userinfo.component.html",
+  styleUrls: ["./userinfo.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserinfoComponent implements OnInit, OnDestroy {
-  customColumn = 'Type';
-  defaultColumns = ['Amount'];
-  allColumns = [ this.customColumn, ...this.defaultColumns ];
+  customColumn = "Type";
+  defaultColumns = ["Amount"];
+  allColumns = [this.customColumn, ...this.defaultColumns];
 
   dataSource: NbTreeGridDataSource<FSEntry>;
 
   sortColumn: string;
   sortDirection: NbSortDirection = NbSortDirection.NONE;
 
-
-
-
   userPictureOnly: boolean = false;
   user: any;
   private destroy$: Subject<void> = new Subject<void>();
-  Name:String;
-  Email:String = "test@email.com";
-  UUID : String = "10";
-  Wallet : Boolean = false;
+  Name: String;
+  Email: String = "test@email.com";
+  UUID: String = "10";
+  Wallet: Boolean = false;
   themes = [
     {
-      value: 'cosmic',
-      name: 'Cosmic',
+      value: "cosmic",
+      name: "Cosmic",
     },
   ];
 
-  currentTheme = 'cosmic';
+  currentTheme = "cosmic";
 
-  constructor(private sidebarService: NbSidebarService,
+  constructor(
+    private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
     private themeService: NbThemeService,
     private userService: UserData,
     private layoutService: LayoutService,
-    private breakpointService: NbMediaBreakpointsService,private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>) {
+    private breakpointService: NbMediaBreakpointsService,
+    private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
+    private userinfo: UserinfoService,
+    private cds: ChangeDetectorRef
+  ) {
     this.dataSource = this.dataSourceBuilder.create(this.data);
-
-     }
+  }
 
   ngOnInit(): void {
     this.currentTheme = this.themeService.currentTheme;
 
-    this.userService.getUsers()
+    this.userService
+      .getUsers()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+      .subscribe((users: any) => (this.user = users.nick));
 
     const { xl } = this.breakpointService.getBreakpointsMap();
-    this.themeService.onMediaQueryChange()
+    this.themeService
+      .onMediaQueryChange()
       .pipe(
         map(([, currentBreakpoint]) => currentBreakpoint.width < xl),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
-      .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+      .subscribe(
+        (isLessThanXl: boolean) => (this.userPictureOnly = isLessThanXl)
+      );
+
+    this.userinfo.Wallet.subscribe((status) => {
+      this.Wallet = status;
+      this.cds.detectChanges();
+    });
   }
 
   ngOnDestroy() {
@@ -97,17 +127,17 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   private data: TreeNode<FSEntry>[] = [
     {
-      data: { Type: 'Out Transactions', Amount:'100' },
+      data: { Type: "Out Transactions", Amount: "100", kind:'dir'},
       children: [
-        { data: { Type: 'Transaction 1', Amount:'50' } },
-        { data: { Type: 'Transaction 2', Amount:'50' } },
+        { data: { Type: "Transaction 1", Amount: "50", kind: 'doc' } },
+        { data: { Type: "Transaction 2", Amount: "50", kind: 'doc' } },
       ],
     },
     {
-      data: { Type: 'In Transactions', Amount:'150' },
+      data: { Type: "In Transactions", Amount: "150", kind:'dir' },
       children: [
-        { data: { Type: 'Transaction 1', Amount:'40' } },
-        { data: { Type: 'Transaction 2', Amount:'60' } },
+        { data: { Type: "Transaction 1", Amount: "40", kind: 'doc' } },
+        { data: { Type: "Transaction 2", Amount: "60", kind: 'doc' } },
       ],
     },
   ];
@@ -115,25 +145,25 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   getShowOn(index: number) {
     const minWithForMultipleColumns = 400;
     const nextColumnStep = 100;
-    return minWithForMultipleColumns + (nextColumnStep * index);
+    return minWithForMultipleColumns + nextColumnStep * index;
   }
 }
 
 @Component({
-  selector: 'ngx-fs-icon',
+  selector: "ngx-fs-icon-ui",
   template: `
-    <nb-tree-grid-row-toggle [expanded]="expanded" *ngIf="isDir(); else fileIcon">
-    </nb-tree-grid-row-toggle>
-    <ng-template #fileIcon>
-      <nb-icon icon="file-text-outline"></nb-icon>
-    </ng-template>
-  `,
+  <nb-tree-grid-row-toggle [expanded]="expanded" *ngIf="isDir(); else fileIcon">
+  </nb-tree-grid-row-toggle>
+  <ng-template #fileIcon>
+    <nb-icon icon="file-text-outline"></nb-icon>
+  </ng-template>
+`,
 })
-export class FsIconComponent {
+export class FsIconUIComponent {
   @Input() kind: string;
   @Input() expanded: boolean;
 
   isDir(): boolean {
-    return this.kind === 'dir';
+    return this.kind === "dir";
   }
 }

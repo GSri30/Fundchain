@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { AddorgComponent } from './addorg/addorg.component';
 
 
 const routes: Routes = [{
@@ -19,6 +20,10 @@ const routes: Routes = [{
     {
       path:'userinfo',
       component: UserinfoComponent,
+    },
+    {
+      path:'addorg',
+      component: AddorgComponent,
     },
     {
       path: '',

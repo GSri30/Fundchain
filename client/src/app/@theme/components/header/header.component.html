@@ -15,7 +15,11 @@
 
         </nb-action>
     </nb-actions>
-    <button nbButton [status]='primary' outline (click)="ConnectWallet()">Connect Wallet</button>
+    <ng-container *ngIf=!wallet>
+        <button nbButton status="primary" outline (click)="ConnectWallet()">Connect Wallet</button>
+    </ng-container>
+    <ng-container *ngIf=wallet>
+        <button nbButton status="danger" outline (click)="DisconnectWallet()">Disonnect Wallet</button>
+    </ng-container>
 
 </div>
-

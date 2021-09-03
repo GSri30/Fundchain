@@ -1,3 +1,4 @@
+import { UserinfoService } from './../../../pages/userinfo/userinfo.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
 
@@ -17,6 +18,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
+  wallet : boolean =  false;
+
   user: any;
 
   themes = [
@@ -28,7 +31,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'dark';
   primary = 'primary';
-
   userMenu = [ { title: 'Profile' }, { title: 'Add Wallet' } ];
 
   constructor(private sidebarService: NbSidebarService,
@@ -37,13 +39,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
-              private taquito: TaquitoService
+              private taquito: TaquitoService,
+              private userinfo : UserinfoService
               ) {
   }
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
-
+    localStorage.clear();
+    sessionStorage.clear();
+    sessionStorage.setItem('isUpdate', 'true');
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users.nick);
@@ -85,9 +90,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  ConnectWallet()
+  async ConnectWallet()
   {
-    console.log("Connect wallet here!");
-    this.taquito.connect_wallet();
+    // console.log("Connect wallet here!");
+    await this.taquito.connect_wallet();
+    if(await this.taquito.is_connected()){
+      this.wallet = true;
+    }
+    this.userinfo.Wallet.next(this.wallet);
+
+  }
+
+  async DisconnectWallet(){
+    await this.taquito.disconnect_wallet();
+    if(!await this.taquito.is_connected()){
+      this.wallet = false;
+    }
+    this.userinfo.Wallet.next(this.wallet);  
   }
 }

@@ -14,6 +14,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
+    title: 'Add Organization',
+    icon: 'plus-outline',
+    link: '/pages/addorg',
+    home: true
+  },
+  {
     title: 'ORGANIZATIONS',
     group: true,
   },

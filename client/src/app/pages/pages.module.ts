@@ -7,7 +7,7 @@ import { NbMenuModule } from '@nebular/theme';
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
-import { UserinfoComponent } from './userinfo/userinfo.component';
+import { AddorgModule } from './addorg/addorg.module';
 
 
 
@@ -19,7 +19,8 @@ import { UserinfoComponent } from './userinfo/userinfo.component';
     NbMenuModule,
     UserinfoModule,
     DashboardModule,
-    MiscellaneousModule
+    MiscellaneousModule,
+    AddorgModule
   ],
   declarations: [
     PagesComponent,

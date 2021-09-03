@@ -1,4 +1,4 @@
-import { UserinfoComponent, FsIconUIComponent } from './userinfo.component';
+import { AddorgComponent } from './addorg.component';
 import { NgModule } from '@angular/core';
 import {
   NbActionsModule,
@@ -10,6 +10,7 @@ import {
   NbSelectModule,
   NbListModule,
   NbIconModule,
+  NbStepperModule,
 
 } from '@nebular/theme';
 import { NbInputModule, NbTreeGridModule } from '@nebular/theme';
@@ -38,11 +39,11 @@ import { FormsModule } from '@angular/forms';
     NbTreeGridModule,
     NbInputModule,
     Ng2SmartTableModule,
+    NbStepperModule
   ],
   declarations: [
-   UserinfoComponent,
-   FsIconUIComponent
+    AddorgComponent
   ],
 })
-export class UserinfoModule { }
+export class AddorgModule { }
 
