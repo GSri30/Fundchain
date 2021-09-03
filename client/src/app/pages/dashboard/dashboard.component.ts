@@ -3,6 +3,8 @@ import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators' ;
 import { SolarData } from '../../@core/data/solar';
 
+import { TaquitoService } from './../../taquito.service'
+
 interface CardSettings {
   title: string;
   iconClass: string;
@@ -31,25 +33,25 @@ export class DashboardComponent implements OnDestroy {
     title: 'Funds Received',
     iconClass: 'nb-lightbulb',
     type: 'primary',
-    count: 400,
+    count: 0,
   };
   ContributorsCard: CardSettings = {
     title: 'Contributors',
     iconClass: 'nb-plus-circled',
     type: 'info',
-    count: 600,
+    count: 0,
   };
   GoalsReachedCard: CardSettings = {
     title: 'Goals Reached',
     iconClass: 'nb-checkmark-circle',
     type: 'success',
-    count: 300,
+    count: 0,
   };
   RecipientsCard: CardSettings = {
     title: 'Recipients',
     iconClass: 'nb-person',
     type: 'warning',
-    count: 500,
+    count: 0,
   };
 
   orgs : Organization[] = [
@@ -57,13 +59,13 @@ export class DashboardComponent implements OnDestroy {
       name : "Test1",
       id : "1",
       type : "Health",
-      description : "This organization....."
+      description : "This organization....." 
     },
     {
       name : "Test2",
       id : "2",
       type : "Education",
-      description : "This organization....."
+      description : "This organization....." 
     }
   ];
   statusCards: string;
@@ -105,12 +107,16 @@ export class DashboardComponent implements OnDestroy {
   };
 
   constructor(private themeService: NbThemeService,
-              private solarService: SolarData) {
+              private solarService: SolarData,
+              private taquito: TaquitoService) {
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
+
+    
+    
 
     this.solarService.getSolarData()
       .pipe(takeWhile(() => this.alive))
@@ -121,6 +127,14 @@ export class DashboardComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  async ngOnInit(){
+    await this.taquito.set_contract();
+    this.RecipientsCard.count = await this.taquito.get_number_posts();
+    this.GoalsReachedCard.count = await this.taquito.get_goals_reached();
+    this.ContributorsCard.count = await this.taquito.get_total_donors();
+    this.FundsReceivedCard.count = await this.taquito.get_total_fund();
   }
 
   openorg(org : any){
