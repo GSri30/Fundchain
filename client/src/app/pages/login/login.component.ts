@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import Sawo from "sawo";
+import {secret} from "../../../environments/secret";
+import { encode, decode } from 'js-base64';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+
 
 @Component({
   selector: 'ngx-login',
@@ -10,36 +14,54 @@ export class LoginComponent implements OnInit {
 
   title = 'angular-sawo-chander';
   Sawo: any;
-  isLoggedIn:any= false;
+  isLoggedIn:boolean = false;
   userPayload:any = {};
   greeting='';
+  container_id=secret.CONTAINER_ID;
 
-  constructor() { }
+  email:string = '';
+  uuid:string = '';
+  name:string = '';
+  profile_pic_number:number = 0;
+
+  returnUrl:string='';
+
+  constructor(
+    private router: Router,
+  ) { }
+
+  // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  //   if(this.isLoggedIn){
+  //     this.router.navigate([this.returnUrl], { queryParams: { isLoggedIn: this.isLoggedIn,email:this.email,uuid:this.uuid,name:this.name,profile_pic_number:this.profile_pic_number} });
+  //     return true;
+  //   }
+  //   this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
+  //   return false;
+  // }
 
   ngOnInit(): void {
+
     const sawoConfig = {
-      containerID: "",
+      containerID: this.container_id,
       identifierType: "email",
       // Secret
-      apiKey: "",
+      apiKey: secret.API_KEY,
       onSuccess: (payload: any) => {
-        this.userPayload = payload;
-        this.isLoggedIn = true;
         // var sawoContainer = document.getElementById("");
         // sawoContainer..remove();
-        console.log(this.userPayload);
-        console.log(this.userPayload['identifier']);
-        console.log(this.userPayload['customFieldInputValues']['Name']);
-        console.log(this.userPayload['customFieldInputValues']['Name']=='');
-        const name=(this.userPayload['customFieldInputValues']['Name']!='' ?this.userPayload['customFieldInputValues']['Name']:"Anonymous");
-        alert(`Hi ${name}!`);
+        this.userPayload = payload;
+        this.isLoggedIn = true;
+        this.email=this.userPayload['identifier'];
+        this.uuid=encode(this.email,true);
+        // const uuid_decode=decode(uuid);
+        this.name=(this.userPayload['customFieldInputValues']['Name']!='' ?this.userPayload['customFieldInputValues']['Name']:"Anonymous");
+        this.profile_pic_number=this.name.length%7;
       }
     };
     this.Sawo = new Sawo(sawoConfig);
   }
 
   ngAfterViewInit() {
-    console.log(this.Sawo);
     this.Sawo.showForm();
   }
 
