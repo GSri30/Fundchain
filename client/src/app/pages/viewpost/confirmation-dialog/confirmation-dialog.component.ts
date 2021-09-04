@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
+import { TaquitoService } from '../../../taquito.service';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { NbDialogRef } from '@nebular/theme';
 })
 export class ConfirmationDialogComponent implements OnInit {
 
-  constructor(private ref: NbDialogRef<ConfirmationDialogComponent>) { }
+  constructor(private ref: NbDialogRef<ConfirmationDialogComponent>,private taquito : TaquitoService) { }
 
   ngOnInit(): void {
   }
@@ -19,8 +20,9 @@ export class ConfirmationDialogComponent implements OnInit {
     this.ref.close();
   }
 
-  Okay()
+  async Okay()
   {
+    // await this.taquito.send_fund();
     this.ref.close();
     console.log("confirmed");
   }

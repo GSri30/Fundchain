@@ -1,4 +1,4 @@
-<h1>Dhamodhara Siddalayam</h1>
+<h1>{{Name}}</h1>
 
 <div class = "row">
      <div class="col-xxxl-7 col-xxl-12 col-md-7">
@@ -63,7 +63,7 @@
                          QR Code Address
                     </div>
                     <div class = "copy-text">
-                         <input type = "text" class = "text" value = {{content}} readonly>
+                         <input type = "text" class = "text" value = {{data}} readonly>
                          <button (click) = "CopyText($event)">
                               <i class = "fa fa-clone"></i>
                          </button>
@@ -73,10 +73,10 @@
           <nb-card>
                <nb-card-body>
                     <div class = "donate">
-                         <input type="number" nbInput fullWidth fieldSize = "large" placeholder="Amount of money you want to donate">
+                         <input type="number" nbInput #amount fullWidth fieldSize = "large" placeholder="Amount of money you want to donate">
                     </div>
                     <div class = "donate-button">
-                         <button nbButton status="success" (click) = "open()">Donate</button>
+                         <button nbButton status="success" (click) = "open(amount.value)">Donate</button>
                     </div>
                </nb-card-body>
           </nb-card>

@@ -136,6 +136,6 @@ export class DashboardComponent implements OnDestroy {
 
   openorg(org : any){
     console.log(org);
-    this.router.navigate(['/pages/viewpost/'+org.id]);
+    this.router.navigate(['/pages/viewpost/'+org.puid]);
   }
 }

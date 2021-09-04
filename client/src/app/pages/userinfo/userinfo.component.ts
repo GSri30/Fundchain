@@ -1,4 +1,6 @@
 import { UserinfoService } from "./userinfo.service";
+import { Base64 } from 'js-base64';
+
 import {
   Component,
   OnInit,
@@ -27,6 +29,7 @@ import { map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
 import {TaquitoService} from "../../taquito.service"
+import { EncodeIntoResult } from "util";
 
 interface TreeNode<T> {
   data: T;
@@ -62,7 +65,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   Name: String = sessionStorage.getItem('name');
   Email: String = sessionStorage.getItem('email');
-  UUID: String = btoa(sessionStorage.getItem('email'));
+  UUID: String = Base64.encode(sessionStorage.getItem('email'),true);
   Wallet: Boolean = false;
   themes = [
     {
@@ -84,7 +87,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private userinfo: UserinfoService,
     private cds: ChangeDetectorRef,
     private ad: ApplicationRef,
-    private taquito: TaquitoService
+    private taquito: TaquitoService,
   ) 
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
@@ -122,7 +125,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async update_out_transactions()
   {
-    const uuid = btoa(sessionStorage.getItem('email'))
+    const uuid = Base64.encode(sessionStorage.getItem('email'),true);
     var transaction_list = await this.taquito.get_specific_from_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[0].children = a;
@@ -139,7 +142,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async update_in_transactions()
   {
-    const uuid = btoa(sessionStorage.getItem('email'))
+    const uuid = Base64.encode(sessionStorage.getItem('email'),true);
     var transaction_list = await this.taquito.get_specific_to_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[1].children = a;
