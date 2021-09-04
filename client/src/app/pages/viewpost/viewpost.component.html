@@ -18,7 +18,7 @@
                               </tbody>
                          </table>
                     </nb-card-body>
-               </nb-card>     
+               </nb-card>
           </div>
           <div>
                <ngx-orgpics [puid] = "puid"></ngx-orgpics>
@@ -34,7 +34,7 @@
                     <div class = "vote-class">
                          <button nbButton outline status="success" class = "vote"><nb-icon icon="arrow-circle-up"></nb-icon> Up Vote </button>
                          <button nbButton outline status="danger" class = "vote"><nb-icon icon="arrow-circle-down"></nb-icon> Down Vote</button>
-                    </div>                    
+                    </div>
                </nb-card-body>
           </nb-card>
           <nb-card>
@@ -46,15 +46,15 @@
                          <div class = "stat">
                               <div class = "stat">
                                    <div class="card-subheading">Goal</div>
-                                   <h4 class="card-heading">{{Goal + " XTz"}}</h4>
+                                   <h4 class="card-heading">{{Goal + " tez"}}</h4>
                               </div>
                               <div class = "stat">
                                    <div class="card-subheading">Reached</div>
-                                   <h4 class="card-heading">{{reached + " XTz"}}</h4>
+                                   <h4 class="card-heading">{{reached + " tez"}}</h4>
                               </div>
                               <div class = "stat">
                                    <div class="card-subheading">Remaining</div>
-                                   <h4 class="card-heading">{{remaining + " XTz"}}</h4>
+                                   <h4 class="card-heading">{{remaining + " tez"}}</h4>
                               </div>
                          </div>
                     </div>
@@ -67,11 +67,11 @@
                          [value]="data"
                          cssClass = "qrcode"
                          >
-                    </ngx-qrcode>    
+                    </ngx-qrcode>
                </div>
                <div class="container">
                     <div class = "label">
-                         QR Code Address
+                         Account Address
                     </div>
                     <div class = "copy-text">
                          <input type = "text" class = "text" value = {{data}} readonly>
@@ -94,10 +94,10 @@
                               </nb-select>
                               <input type="number" nbInput value = {{disp}} #xtz fieldSize = "large" placeholder="Amount of money you want to donate" readonly>
                          </div>
-                         
+
                     </div>
                     <div class = "donate">
-                         <input type="text" nbInput #comment fullWidth fieldSize = "large" placeholder="Comment your opinion">
+                         <input type="text" nbInput #comment fullWidth fieldSize = "large" placeholder="Your Comments">
                     </div>
                     <div class = "donate-button">
                          <button nbButton status="success" (click) = "fund(amount.value, comment.value)">Fund</button>

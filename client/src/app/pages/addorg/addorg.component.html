@@ -9,7 +9,7 @@
                         <input type="text" nbInput #name fullWidth placeholder="Name of the cause">
                         <input type="text" nbInput #institution fullWidth placeholder="Name of the Institution (if any)">
                     </div>
-                    <textarea rows="5" nbInput #description fullWidth  shape="round" placeholder="Description"></textarea>
+                    <textarea rows="5" nbInput #description fullWidth shape="round" placeholder="Description"></textarea>
                     <div class="full-name-inputs">
                         <input type="text" nbInput #goal placeholder="Goal to be reached">
                         <nb-select placeholder="Currency">
@@ -17,20 +17,24 @@
                             <nb-option value="2">Dollars</nb-option>
                         </nb-select>
                     </div>
-                    <nb-select fullWidth [(ngModel)]="selectedOption" placeholder="Type of the organisation">
-                        <nb-option value="Education">Education</nb-option>
-                        <nb-option value="Start Ups">Start Ups</nb-option>
-                        <nb-option value="Old Age Homes">Old Age Homes</nb-option>
-                        <nb-option value="Health">Health</nb-option>
-                        <nb-option value="Rural Development">Rural Development</nb-option>
-                        <nb-option value="Nature">Nature</nb-option>
-                        <nb-option value="Farming">Farming</nb-option>
-                        <nb-option value="Others">Others</nb-option>
-                    </nb-select>
+                    <div class="full-name-inputs">
+                        <nb-select fullWidth [(ngModel)]="selectedOption" placeholder="Type of the organisation">
+                            <nb-option value="Education">Education</nb-option>
+                            <nb-option value="Start Ups">Start Ups</nb-option>
+                            <nb-option value="Old Age Homes">Old Age Homes</nb-option>
+                            <nb-option value="Health">Health</nb-option>
+                            <nb-option value="Rural Development">Rural Development</nb-option>
+                            <nb-option value="Nature">Nature</nb-option>
+                            <nb-option value="Farming">Farming</nb-option>
+                            <nb-option value="Others">Others</nb-option>
+                        </nb-select>
+                        <input nbInput placeholder="Deadline" [nbDatepicker]="formpicker">
+                        <nb-datepicker #formpicker></nb-datepicker>
+                    </div>
                     <span>Select Image: </span>
                     <input nbInput #imageInput type="file" accept="image/*" multiple (change)="processFile(imageInput)">
                     <br>
-                    <button type="submit" (click) = "addOrg(name.value,description.value,goal.value,selectedOption,institution.value)" nbButton status="primary">Create</button>
+                    <button type="submit" (click)="addOrg(name.value,description.value,goal.value,selectedOption,institution.value)" nbButton status="primary">Create</button>
 
                 </nb-card-body>
             </nb-card>
@@ -40,11 +44,13 @@
 <ng-container *ngIf=!Wallet>
     <nb-card>
         <nb-card-body>
-            <h2>Please connect your wallet to add an organization!</h2>
+            <div class="center">
+              <h4>Please connect your wallet to raise a fund!</h4>
+            </div>
         </nb-card-body>
     </nb-card>
 </ng-container>
-<!-- 
+<!--
 //Post Post Screen (Add issue):
 Pictures
 Cause Name

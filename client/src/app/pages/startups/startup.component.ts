@@ -27,6 +27,6 @@ export class StartupComponent implements OnInit {
   }
   vieworg(puid)
   {
-    this.router.navigate(['/pages/viewpost/'+puid]);
+    this.router.navigate(['/main/viewpost/'+puid]);
   }
 }

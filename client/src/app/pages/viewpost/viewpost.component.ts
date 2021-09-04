@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 interface OrganizationInfo{
-  title: string, 
+  title: string,
   data: string,
 };
 
@@ -77,7 +77,7 @@ export class ViewpostComponent implements OnInit, OnChanges{
     //   this.disp = this.inrTOtez(this.con);
     // });
     const routeparams = this.route.snapshot.paramMap;
-    this.puid = <String>routeparams.get('id');    
+    this.puid = <String>routeparams.get('id');
     this.remaining = this.Goal - this.reached;
     await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
@@ -133,12 +133,12 @@ export class ViewpostComponent implements OnInit, OnChanges{
     await this.taqutio.set_contract();
     var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description'];
     var Data = ['-', '-', '-', '-', '-'];
-    
+
     const post:any = await this.taqutio.get_post(puid);
     Data[0] = post.name;
     Data[1] = post.post_type;
     Data[2] = post.institution;
-    Data[3] = post.goal+" XTZ";
+    Data[3] = post.goal+" tez";
     Data[4] = post.description;
     this.Name = Data[0];
     this.puid = puid;
@@ -146,7 +146,7 @@ export class ViewpostComponent implements OnInit, OnChanges{
     this.Goal = post.goal;
     this.reached = post.received_mutez;
     this.remaining = post.goal - post.received_mutez;
-    
+
     for(let i=0; i<titles.length; i++)
     {
       this.OrgInfo.push({
@@ -159,7 +159,7 @@ export class ViewpostComponent implements OnInit, OnChanges{
   async donate()
   {
     await this.taqutio.set_contract();
-    // this.taqutio.send_fund(Base64.encode(sessionStorage.getItem('email'),true),this.puid,); 
+    // this.taqutio.send_fund(Base64.encode(sessionStorage.getItem('email'),true),this.puid,);
   }
 
   fund(amount: number, comment: string)

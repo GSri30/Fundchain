@@ -9,7 +9,7 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'pages',
+    path: 'main',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
   },

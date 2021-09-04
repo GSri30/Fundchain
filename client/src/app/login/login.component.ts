@@ -89,7 +89,7 @@ export class LoginComponent implements OnInit,CanActivate {
         //this.cds.detectChanges();
         await this.taquito.set_contract();
         const x = await this.taquito.check_new_user(this.email);
-        if(x) 
+        if(x)
         {
           await this.taquito.connect_wallet();
           await this.taquito.add_new_user(this.email);
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit,CanActivate {
         if(this.isLoggedIn){
           this.isLoader = false;
           //this.cds.detectChanges();
-          this.router.navigate(['/pages']);
+          this.router.navigate(['/main']);
         }
       }
     };
