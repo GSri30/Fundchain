@@ -11,6 +11,8 @@ interface FSEntry {
   Amount: string;
   items?: number;
   kind: string;
+  puid: string;
+  transid : string;
 }
 
 @Injectable({

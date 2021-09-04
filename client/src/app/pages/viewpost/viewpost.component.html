@@ -88,11 +88,12 @@
                               <input type="number" (change)=checkinp(amount.value) nbInput value = {{con}} fullWidth #amount fieldSize = "large" placeholder="Amount of money you want to donate">
                          </div>
                          <div class = "converter">
-                              <nb-select placeholder="Select Showcase" [(selected)]="curr">
+                              <nb-select (selectedChange)="change(amount.value,$event)" placeholder="Select Showcase" [(selected)]="curr">
                                    <nb-option value="rupee">Rupee</nb-option>
                                    <nb-option value="dollar">Dollar</nb-option>
                               </nb-select>
-                              <input type="number" nbInput value = {{disp}} #xtz fieldSize = "large" placeholder="Amount of money you want to donate" readonly>
+                              <!-- <p> {{disp}} tez</p> -->
+                               <input type="text" nbInput value = {{disp}} #xtz fieldSize = "large" placeholder="Amount of money you want to donate" readonly>
                          </div>
 
                     </div>

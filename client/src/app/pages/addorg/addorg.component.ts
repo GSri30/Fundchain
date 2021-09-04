@@ -86,8 +86,7 @@ export class AddorgComponent implements OnInit {
     await this.taquito.set_contract();
     
     const dl = new Date(deadline);
-    // deadline = dl.getTime()/1000;
-    
+    // deadline = dl.getTime()/1000;    
     var images = this.ipfs.get_hashes(); 
     
     const op = await this.taquito.add_new_post(name,description,institution,post_type,Base64.encode(sessionStorage.getItem('email'),true),goal,images,dl);
