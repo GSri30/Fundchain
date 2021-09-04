@@ -1,0 +1,39 @@
+<div class = "row">
+     <div class="col-xxxl-8 col-xxl-12 col-md-7">
+          <ngx-orgpics></ngx-orgpics>
+     </div>
+
+     <div class = "col-xxxl-4 col-md-5">
+          <nb-card>
+               <div class = "qrcode">
+                    <ngx-qrcode
+                         [elementType]="elementType"
+                         [value]="data"
+                         cssClass = "qrcode"
+                         >
+                    </ngx-qrcode>    
+               </div>
+               <div class="container">
+                    <div class = "label">
+                         QR Code Address
+                    </div>
+                    <div class = "copy-text">
+                         <input type = "text" class = "text" value = {{content}} readonly>
+                         <button (click) = "CopyText($event)">
+                              <i class = "fa fa-clone"></i>
+                         </button>
+                    </div>
+               </div>
+          </nb-card>
+          <nb-card>
+               <div class = "row">
+                    <div class = "col-xxxl-8 col-xxl-12 col-md-7">
+                         <!-- <div id="fluid-meter"></div> -->
+                    </div>
+                    <div class = "col-xxxl-4 col-md-5">
+
+                    </div>
+               </div>
+          </nb-card>
+     </div>
+</div>

@@ -4,19 +4,25 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Profile',
     icon: 'person-outline',
-    link: '/userinfo',
+    link: '/pages/userinfo',
     home: true,
   },
   {
     title: 'Dashboard',
     icon: 'grid-outline',
-    link: '/dashboard',
+    link: '/pages/dashboard',
     home: true,
   },
   {
     title: 'Add Organization',
     icon: 'plus-outline',
-    link: '/addorg',
+    link: '/pages/addorg',
+    home: true
+  },
+  {
+    title: 'viewpost',
+    icon: 'plus-outline',
+    link: '/pages/viewpost',
     home: true
   },
   {

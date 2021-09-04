@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IpfsComponent } from './ipfs.component';
+import { OrgpicsComponent } from './orgpics.component';
 
-describe('IpfsComponent', () => {
-  let component: IpfsComponent;
-  let fixture: ComponentFixture<IpfsComponent>;
+describe('OrgpicsComponent', () => {
+  let component: OrgpicsComponent;
+  let fixture: ComponentFixture<OrgpicsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IpfsComponent ]
+      declarations: [ OrgpicsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IpfsComponent);
+    fixture = TestBed.createComponent(OrgpicsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

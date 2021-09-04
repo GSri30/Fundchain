@@ -1,6 +1,7 @@
+import { AppService } from './../app.service';
 import { Component, OnInit } from '@angular/core';
 import Sawo from "sawo";
-import {secret} from "../../../environments/secret";
+import {secret} from "../../environments/secret";
 import { encode, decode } from 'js-base64';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private appservice: AppService
   ) { }
 
   // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
+    console.log("hello");
     const sawoConfig = {
       containerID: this.container_id,
       identifierType: "email",
@@ -56,6 +59,11 @@ export class LoginComponent implements OnInit {
         // const uuid_decode=decode(uuid);
         this.name=(this.userPayload['customFieldInputValues']['Name']!='' ?this.userPayload['customFieldInputValues']['Name']:"Anonymous");
         this.profile_pic_number=this.name.length%7;
+        this.appservice.name.next(this.name);
+        this.appservice.email.next(this.email);
+        this.appservice.uuid.next(this.uuid);
+        this.appservice.profile_pic_number.next(this.profile_pic_number);
+
       }
     };
     this.Sawo = new Sawo(sawoConfig);
