@@ -55,18 +55,6 @@ export class DashboardComponent implements OnDestroy {
   };
 
   orgs : Organization[] = [
-    {
-      name : "Test1",
-      id : "1",
-      type : "Health",
-      description : "This organization....." 
-    },
-    {
-      name : "Test2",
-      id : "2",
-      type : "Education",
-      description : "This organization....." 
-    }
   ];
   statusCards: string;
 
@@ -135,6 +123,13 @@ export class DashboardComponent implements OnDestroy {
     this.GoalsReachedCard.count = await this.taquito.get_goals_reached();
     this.ContributorsCard.count = await this.taquito.get_total_donors();
     this.FundsReceivedCard.count = await this.taquito.get_total_fund();
+    var post_list = await this.taquito.get_all_posts();
+    let i =0;
+    while(i<post_list.length)
+    {
+      this.orgs.push(post_list[i] as Organization)
+      i++;
+    }
   }
 
   openorg(org : any){

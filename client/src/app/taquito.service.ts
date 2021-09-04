@@ -3,6 +3,7 @@ import { MichelsonMap, TezosToolkit} from '@taquito/taquito';
 import { BeaconWallet } from '@taquito/beacon-wallet';
 import { NetworkType } from "@airgap/beacon-sdk";
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 
 
 @Injectable({
@@ -34,14 +35,50 @@ export class TaquitoService {
 
     public async get_specific_from_transactions(uuid):Promise<Array<object>> {        
         if(this.storage == undefined) this.storage = await this.contract.storage();
-        console.log(this.storage.transactions.get(uuid)[0]);
-        return this.storage.transactions.get(uuid)[0];
+        var tlist:{}[] = [];
+        var i = 1;
+        this.storage.transactions.get(uuid).forEach((val: any, key: string) => {
+            tlist.push({data : {
+                Type : this.storage.posts.get(val.to_puid).name,
+                Amount : val.amount.c[0].toString(),
+                kind : 'doc'
+                }});
+            i+=1;
+        });
+        return tlist;
     }
 
-    public async get_specific_to_transactions(puid):Promise<Array<object>> {
+    public async get_specific_to_transactions(uuid):Promise<Array<object>> {
         if(this.storage == undefined)this.storage = await this.contract.storage();
-        console.log(this.storage.transactions.get(puid)[0]);
-        return this.storage.transactions.get(puid)[0];
+        var tlist:{}[] = [];
+        var i = 0;
+        var post_list = this.storage.users.get(uuid).posts;
+        while(i<post_list.length)
+        {
+            this.storage.transactions.get(post_list[i]).forEach((val: any, key: string) => {
+                tlist.push({data : {
+                    Type : this.storage.posts.get(val.to_puid).name,
+                    Amount : val.amount.c[0].toString(),
+                    kind : 'doc'
+                    }});
+            });
+            i+=1;
+        }
+        return tlist;
+    }
+    public async get_specific_post_transactions(puid):Promise<Array<object>> {
+        if(this.storage == undefined) this.storage = await this.contract.storage();
+        var tlist:{}[] = [];
+        var i = 1;
+        this.storage.transactions.get(puid).forEach((val: any, key: string) => {
+            tlist.push({data : {
+                Type : this.storage.posts.get(val.to_puid).name,
+                Amount : val.amount.c[0].toString(),
+                kind : 'doc'
+                }});
+            i+=1;
+        });
+        return tlist;
     }
     
     public async get_all_transactions():Promise<object> {
@@ -51,7 +88,7 @@ export class TaquitoService {
             transactions_list.push({ uuid: key, transaction: val });
         });
         console.log(transactions_list[0]);
-        return this.storage.transactions;
+        return transactions_list;
     }
 
     //get user
@@ -129,11 +166,21 @@ export class TaquitoService {
         // console.log(posts);
         return posts;
     }
-
-    public async get_all_posts():Promise<object> {
+    
+    public async get_all_posts():Promise<Array<Object>> {
         if(this.storage == undefined)this.storage = await this.contract.storage();
-        // console.log(this.storage.posts);
-        return this.storage.posts;
+        const post_list: { name: string; id: string, type: string, description : string }[] = [];
+        var i = 1;
+        this.storage.posts.forEach((val: any, key: string) => {
+            post_list.push({
+                name : val.name,
+                id : i.toString(),
+                type : val.post_type,
+                description : val.description,
+                });
+            i+=1;
+        });
+        return post_list;
     }
 
     public async get_total_users():Promise<number>{
@@ -171,7 +218,7 @@ export class TaquitoService {
 
     public async add_new_user(email) {
         const op = await this.contract.methods
-        .add_user(email,"hash2(email)")
+        .add_user(email,"hash(" +(email) + ")")
         .send();
         await op.confirmation();
     }
@@ -183,7 +230,6 @@ export class TaquitoService {
         .add_post(userAddress,description,goal,institution,name,post_type,puid,user_uuid)
         .send();
         await op.confirmation();
-        
     }
 
     public async is_connected():Promise<boolean>
