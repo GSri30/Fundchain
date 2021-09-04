@@ -5,9 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import FluidMeter from '../../../js/js-fluid-meter.js';
 import {NbDialogService} from '@nebular/theme';
-import {TaquitoService} from '../../taquito.service';
-import {QrcodeComponent} from '../qrcode/qrcode.component'
-import { Base64 } from 'js-base64';
+
 
 interface OrganizationInfo{
   title: string, 
@@ -20,37 +18,36 @@ interface OrganizationInfo{
   styleUrls: ['./viewpost.component.scss']
 })
 export class ViewpostComponent implements OnInit {
+
   constructor(
     private clipboardApi: ClipboardService,
     private dialogService: NbDialogService,
-    private route: ActivatedRoute,
-    private taqutio : TaquitoService,
-    private qr:QrcodeComponent
+    private route: ActivatedRoute
   ) { }
 
-  // content: string = "abcdefghijklmnopqrstuvwxyz";
+  content: string = "abcdefghijklmnopqrstuvwxyz";
   elementType = 'canvas';
-  data = 'pleasewait_pleasewait';
+  data = 'aAgdk35gknek35NGkl';
 
-  Name: String;
-  Goal: number = 0;
-  reached: number = 0;
+  Goal: number = 4000;
+  reached: number = 1000;
   remaining: number = 0;
 
   OrgInfo: OrganizationInfo[] = [];
-  puid:string;
-  async ngOnInit(): Promise<void> {
+
+
+  ngOnInit(): void {
     const routeparams = this.route.snapshot.paramMap;
-    const puid = <String>routeparams.get('id');
-    // console.log(orgid);
+    const orgid = <String>routeparams.get('id');
+    console.log(orgid);
     this.remaining = this.Goal - this.reached;
     this.fluidMeter();
-    this.getOrganizationDetails(puid);
+    this.getOrganizationDetails();
   }
 
   CopyText(content: string)
   {
-    this.clipboardApi.copyFromContent(this.data);
+    this.clipboardApi.copyFromContent(this.content);
   }
 
   fluidMeter()
@@ -82,27 +79,13 @@ export class ViewpostComponent implements OnInit {
         },
       }
     });
+
   }
 
-  async getOrganizationDetails(puid)
+  getOrganizationDetails()
   {
-    await this.taqutio.set_contract();
-    var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description'];
-    var Data = ['-', '-', '-', '-', '-'];
-    
-    const post:any = await this.taqutio.get_post(puid);
-    Data[0] = post.name;
-    Data[1] = post.post_type;
-    Data[2] = post.institution;
-    Data[3] = post.goal+" XTZ";
-    Data[4] = post.description;
-    this.Name = Data[0];
-    this.puid = puid;
-    this.data = post.address;
-    this.Goal = post.goal;
-    this.reached = post.received_mutez;
-    this.remaining = post.goal - post.received_mutez;
-    
+    var titles = ['Name Of the Organization', 'Organization Type', 'Cause', 'Target Amount', 'Description'];
+    var Data = ['Dhamodhara Siddhalayam', 'Education', 'Public college bathroom repairs', '4000 XTz', 'ksdhfsh fksbdk kjdfksb kjkfsjbd kbfiuhei fgjdk kdbfv ksdifg urhfi weugf lbkdbk vkjbsk dbvks ksdj bigiuke fiuw iegf kdjbkbkj vdsbi lefohiu fbiwuf kjbib jfbkd sjbkjbkjd sbvkb jvbjsdb'];
     for(let i=0; i<titles.length; i++)
     {
       this.OrgInfo.push({
@@ -112,20 +95,12 @@ export class ViewpostComponent implements OnInit {
     }
   }
 
-  async donate()
+  open()
   {
-    await this.taqutio.set_contract();
-    // this.taqutio.send_fund(Base64.encode(sessionStorage.getItem('email'),true),this.puid,); 
-  }
-
-  open(amount)
-  {
-    console.log('c');
     this.dialogService.open(
       ConfirmationDialogComponent,
       {
         closeOnBackdropClick: false,
       });
-    console.log('dadsd');
   }
 }

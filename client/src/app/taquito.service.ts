@@ -4,7 +4,7 @@ import { BeaconWallet } from '@taquito/beacon-wallet';
 import { NetworkType } from "@airgap/beacon-sdk";
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
-import { Base64 } from 'js-base64';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,17 +12,17 @@ import { Base64 } from 'js-base64';
 export class TaquitoService {
     private taquito: TezosToolkit = new TezosToolkit('https://florencenet.smartpy.io/');
     private wallet;
-    private contract_address = "KT1NeHakUJ3uYAfwGMQ5pJf3tNzd8Czy75Ys";
+    private contract_address = "KT1VZoraKP7md8fLVBojL9RbrHNw4HLNRJGU";
     private storage = undefined;
     private contract = undefined;
     constructor() {}
     
     public async set_contract() {
-        if(this.storage == undefined) 
-        {
+        // if(this.storage == undefined) 
+        // {
             this.contract = await this.taquito.wallet.at(this.contract_address);
             this.storage = await this.contract.storage();
-        }
+        // }
     }
 
     public async connect_wallet() {
@@ -37,7 +37,7 @@ export class TaquitoService {
     }
 
     public async get_specific_from_transactions(uuid):Promise<Array<object>> {        
-        if(this.storage == undefined)this.storage = await this.contract.storage();
+        if(this.storage == undefined) this.storage = await this.contract.storage();
         var tlist:{}[] = [];
         var i = 1;
         this.storage.transactions.get(uuid).forEach((val: any, key: string) => {
@@ -70,7 +70,7 @@ export class TaquitoService {
         return tlist;
     }
     public async get_specific_post_transactions(puid):Promise<Array<object>> {
-        if(this.storage == undefined)this.storage = await this.contract.storage();
+        if(this.storage == undefined) this.storage = await this.contract.storage();
         var tlist:{}[] = [];
         var i = 1;
         this.storage.transactions.get(puid).forEach((val: any, key: string) => {
@@ -102,9 +102,9 @@ export class TaquitoService {
     }
     // get post
     public async get_post(puid):Promise<object>{
-        if(this.storage == undefined)this.storage = await this.contract.storage();
-        // console.log(this.storage.posts.get(puid));
-        return this.storage.posts.get(puid);
+        if(this.storage == undefined) this.storage = await this.contract.storage();
+        console.log(this.storage.posts[puid]);
+        return this.storage.posts[puid];
     }
 
     // get total fund
@@ -142,6 +142,8 @@ export class TaquitoService {
     
     //get weekly fundings
 
+    //get QR
+
     //set vote
 
     //Send anyway (transaction)
@@ -170,13 +172,12 @@ export class TaquitoService {
     
     public async get_all_posts():Promise<Array<Object>> {
         if(this.storage == undefined)this.storage = await this.contract.storage();
-        const post_list: { name: string; id: string, puid : string,type: string, description : string }[] = [];
+        const post_list: { name: string; id: string, type: string, description : string }[] = [];
         var i = 1;
         this.storage.posts.forEach((val: any, key: string) => {
             post_list.push({
                 name : val.name,
                 id : i.toString(),
-                puid : key,
                 type : val.post_type,
                 description : val.description,
                 });
@@ -193,7 +194,7 @@ export class TaquitoService {
     
     async check_new_user(email):Promise<Boolean>{
         if(this.storage == undefined)this.storage = await this.contract.storage();
-        if(this.storage.users.get(Base64.encode(email,true))) return false;
+        if(this.storage.users.get(btoa(email))) return false;
         else return true;
     }
 
@@ -220,23 +221,21 @@ export class TaquitoService {
 
     public async add_new_user(email) {
         const op = await this.contract.methods
-        .add_user(email,Base64.encode(email,true))
+        .add_user(email,btoa(email))
         .send();
         await op.confirmation();
     }
 
-    public async add_new_post(name,description,institution,post_type,uuid,goal,images) {
+    public async add_new_post(name,description,institution,post_type,uuid,goal) {
         const userAddress = await this.wallet.getPKH();
         if(this.storage == undefined) this.storage = this.contract.storage();
-        
         const len = await this.storage.users.get(uuid).posts.length;
         const posts = await this.storage.users.get(uuid);
         var email = atob(uuid);
-        const puid = Base64.encode(email+ len.toString(),true);
-        // console.log(typeof(images));
-        // console.log(images[0]);
+        console.log(len,posts);
+        const puid = btoa(email + len.toString());
         const op = await this.contract.methods
-        .add_post(userAddress,description,goal,institution,name,images,post_type,puid,uuid)
+        .add_post(userAddress,description,goal,institution,name,post_type,puid,uuid)
         .send();
         await op.confirmation();
     }

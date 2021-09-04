@@ -1,6 +1,4 @@
 import { UserinfoService } from "./userinfo.service";
-import { Base64 } from 'js-base64';
-
 import {
   Component,
   OnInit,
@@ -11,6 +9,7 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
+  NbIconLibraries,
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
@@ -29,7 +28,6 @@ import { map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
 import {TaquitoService} from "../../taquito.service"
-import { EncodeIntoResult } from "util";
 
 interface TreeNode<T> {
   data: T;
@@ -54,7 +52,8 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   customColumn = "Type";
   defaultColumns = ["Amount"];
   allColumns = [this.customColumn, ...this.defaultColumns];
-
+  verifierXP:Number = 2000;
+  orgXP:Number = 1000;
   dataSource: NbTreeGridDataSource<FSEntry>;
 
   sortColumn: string;
@@ -65,7 +64,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   Name: String = sessionStorage.getItem('name');
   Email: String = sessionStorage.getItem('email');
-  UUID: String = Base64.encode(sessionStorage.getItem('email'),true);
+  UUID: String = btoa(sessionStorage.getItem('email'));
   Wallet: Boolean = false;
   themes = [
     {
@@ -75,6 +74,11 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   ];
 
   currentTheme = "cosmic";
+  tick : String = "checkmark-square-2";
+  cross : String = "close-square";
+  xpicon : String ="arrowhead-up-outline";
+  xpicon2 : String ="arrow-circle-up-outline";
+
 
   constructor(
     private sidebarService: NbSidebarService,
@@ -88,6 +92,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private cds: ChangeDetectorRef,
     private ad: ApplicationRef,
     private taquito: TaquitoService,
+    private iconsLibrary: NbIconLibraries
   ) 
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
@@ -125,7 +130,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async update_out_transactions()
   {
-    const uuid = Base64.encode(sessionStorage.getItem('email'),true);
+    const uuid = btoa(sessionStorage.getItem('email'))
     var transaction_list = await this.taquito.get_specific_from_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[0].children = a;
@@ -142,7 +147,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async update_in_transactions()
   {
-    const uuid = Base64.encode(sessionStorage.getItem('email'),true);
+    const uuid = btoa(sessionStorage.getItem('email'))
     var transaction_list = await this.taquito.get_specific_to_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[1].children = a;
