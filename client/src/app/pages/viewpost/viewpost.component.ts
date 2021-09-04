@@ -19,8 +19,11 @@ interface OrganizationInfo{
 export class ViewpostComponent implements OnInit {
 
   constructor(
+
     private clipboardApi: ClipboardService,
     private dialogService: NbDialogService
+    private clipboardApi: ClipboardService
+
   ) { }
 
   content: string = "abcdefghijklmnopqrstuvwxyz";
@@ -38,6 +41,7 @@ export class ViewpostComponent implements OnInit {
     this.remaining = this.Goal - this.reached;
     this.fluidMeter();
     this.getOrganizationDetails();
+
   }
 
   CopyText(content: string)
@@ -77,6 +81,9 @@ export class ViewpostComponent implements OnInit {
 
   }
 
+
+  }
+
   getOrganizationDetails()
   {
     var titles = ['Name Of the Organization', 'Organization Type', 'Cause', 'Target Amount', 'Description'];
@@ -89,6 +96,7 @@ export class ViewpostComponent implements OnInit {
       })
     }
   }
+
 
   open()
   {
