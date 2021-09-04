@@ -173,12 +173,12 @@ export class ViewpostComponent implements OnInit, OnChanges{
   async upvote()
   {
     await this.taqutio.set_contract();
-    await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid); 
+    await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
   }
   async downvote()
   {
     await this.taqutio.set_contract();
-    await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid); 
+    await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
   }
 
   fund(amount: number, comment: string)
