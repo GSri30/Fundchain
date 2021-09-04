@@ -1,4 +1,3 @@
-import { ViewpostComponent } from './viewpost/viewpost.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserinfoComponent } from './userinfo/userinfo.component';
 
@@ -8,13 +7,18 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { AddorgComponent } from './addorg/addorg.component';
-//import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
+import { IpfsComponent } from './ipfs/ipfs.component';
 
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
+    {
+      path: 'login',
+      component: LoginComponent,
+    },
     {
       path: 'dashboard',
       component: DashboardComponent,
@@ -24,12 +28,12 @@ const routes: Routes = [{
       component: UserinfoComponent,
     },
     {
-      path:'viewpost',
-      component: ViewpostComponent,
-    },
-    {
       path:'addorg',
       component: AddorgComponent,
+    },
+    {
+      path: 'ipfs',
+      component: IpfsComponent,
     },
     {
       path: '',

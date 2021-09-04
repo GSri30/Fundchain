@@ -2,18 +2,17 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
 import { NgModule } from '@angular/core';
-import { NbMenuModule, NbCardModule, NbIconModule, NbButtonModule } from '@nebular/theme';
+import { NbMenuModule } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { AddorgModule } from './addorg/addorg.module';
-import { ViewpostComponent } from './viewpost/viewpost.component';
-import { OrgpicsComponent } from './viewpost/orgpics/orgpics.component';
-//import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './login/login.component';
 import { QrcodeComponent } from './qrcode/qrcode.component';
 
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { IpfsComponent } from './ipfs/ipfs.component';
 
 
 
@@ -22,9 +21,6 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
-    NbCardModule,
-    NbIconModule,
-    NbButtonModule,
     UserinfoModule,
     DashboardModule,
     MiscellaneousModule,
@@ -33,10 +29,9 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
   ],
   declarations: [
     PagesComponent,
-    ViewpostComponent,
-    OrgpicsComponent,
-    //LoginComponent,
+    LoginComponent,
     QrcodeComponent,
+    IpfsComponent,
   ],
 })
 export class PagesModule {
