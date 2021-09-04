@@ -5,7 +5,6 @@ import {secret} from "../../environments/secret";
 import { encode, decode } from 'js-base64';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 
-import { TaquitoService } from '../taquito.service';
 
 @Component({
   selector: 'ngx-login',
@@ -30,8 +29,7 @@ export class LoginComponent implements OnInit,CanActivate {
 
   constructor(
     private router: Router,
-    private appservice: AppService,
-    private taquito: TaquitoService
+    private appservice: AppService
   ) { }
 
    canActivate(route, state: RouterStateSnapshot) {
@@ -43,7 +41,7 @@ export class LoginComponent implements OnInit,CanActivate {
     return false;
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     sessionStorage.clear();
     localStorage.clear();
     sessionStorage.setItem('isUpdate', 'true');
@@ -53,7 +51,7 @@ export class LoginComponent implements OnInit,CanActivate {
       identifierType: "email",
       // Secret
       apiKey: secret.API_KEY,
-      onSuccess: async (payload: any) => {
+      onSuccess: (payload: any) => {
         // var sawoContainer = document.getElementById("");
         // sawoContainer..remove();
         this.userPayload = payload;
@@ -72,16 +70,10 @@ export class LoginComponent implements OnInit,CanActivate {
         sessionStorage.setItem("email", this.email);
         sessionStorage.setItem("uuid", this.uuid);
         sessionStorage.setItem("profilepicid",this.profile_pic_number.toString());
-        await this.taquito.set_contract();
-        const x = await this.taquito.check_new_user(this.email);
-        if(x) 
-        {
-          await this.taquito.connect_wallet();
-          await this.taquito.add_new_user(this.email);
-        }
         if(this.isLoggedIn){
           this.router.navigate(['/pages']);
         }
+        
       }
     };
     this.Sawo = new Sawo(sawoConfig);

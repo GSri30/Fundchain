@@ -43,8 +43,7 @@ export class AddorgComponent implements OnInit {
 
   async addOrg(name,description,goal,post_type,institution):Promise<number>
   {    
-    await this.taquito.set_contract();
-    await this.taquito.add_new_post(name,description,institution,post_type,btoa(sessionStorage.getItem('email')),goal);
+    await this.taquito.add_new_post(name,description,institution,post_type,"hash2(email)","p00002",goal);
     return 1;
   }
 }

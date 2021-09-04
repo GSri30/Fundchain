@@ -16,6 +16,7 @@ import {ClipboardModule} from 'ngx-clipboard';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { IpfsComponent } from './ipfs/ipfs.component';
 import { LoginComponent } from '../login/login.component';
+import { FluidMeterComponent } from './viewpost/fluid-meter/fluid-meter.component';
 
 
 
@@ -41,6 +42,7 @@ import { LoginComponent } from '../login/login.component';
     //LoginComponent,
     QrcodeComponent,
     IpfsComponent,
+    FluidMeterComponent,
   ],
   providers: [
     LoginComponent

@@ -5,7 +5,6 @@ import {
   OnDestroy,
   Input,
   ChangeDetectionStrategy,
-  ApplicationRef,
   ChangeDetectorRef,
 } from "@angular/core";
 import {
@@ -25,9 +24,6 @@ import { UserData } from "../../@core/data/users";
 import { LayoutService } from "../../@core/utils";
 import { map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-
-import {TaquitoService} from "../../taquito.service"
-
 interface TreeNode<T> {
   data: T;
   children?: TreeNode<T>[];
@@ -60,9 +56,9 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   userPictureOnly: boolean = false;
   user: any;
   private destroy$: Subject<void> = new Subject<void>();
-  Name: String = sessionStorage.getItem('name');
-  Email: String = sessionStorage.getItem('email');
-  UUID: String = btoa(sessionStorage.getItem('email'));
+  Name: String;
+  Email: String = "test@email.com";
+  UUID: String = "10";
   Wallet: Boolean = false;
   themes = [
     {
@@ -82,15 +78,14 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private dataSourceBuilder: NbTreeGridDataSourceBuilder<FSEntry>,
     private userinfo: UserinfoService,
-    private cds: ChangeDetectorRef,
-    private ad: ApplicationRef,
-    private taquito: TaquitoService
-  ) 
-  {
+    private cds: ChangeDetectorRef
+  ) {
     this.dataSource = this.dataSourceBuilder.create(this.data);
   }
 
-   async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
+    this.currentTheme = this.themeService.currentTheme;
+
     this.userService
       .getUsers()
       .pipe(takeUntil(this.destroy$))
@@ -111,47 +106,6 @@ export class UserinfoComponent implements OnInit, OnDestroy {
       this.Wallet = status;
       this.cds.detectChanges();
     });
-
-    this.currentTheme = this.themeService.currentTheme;
-
-    await this.taquito.set_contract();
-
-    this.update_out_transactions();
-    this.update_in_transactions();
-  }
-
-  async update_out_transactions()
-  {
-    const uuid = btoa(sessionStorage.getItem('email'))
-    var transaction_list = await this.taquito.get_specific_from_transactions(uuid);
-    var a = transaction_list as TreeNode<FSEntry>[];
-    this.data[0].children = a;
-    var amount = 0,i = 0;
-    while(i<a.length)
-    {
-      amount += parseInt(a[i].data.Amount)
-      i+=1
-    }
-    this.data[0].data.Amount = amount.toString();
-    this.cds.detectChanges();
-    this.dataSource = this.dataSourceBuilder.create(this.data);    
-  }
-
-  async update_in_transactions()
-  {
-    const uuid = btoa(sessionStorage.getItem('email'))
-    var transaction_list = await this.taquito.get_specific_to_transactions(uuid);
-    var a = transaction_list as TreeNode<FSEntry>[];
-    this.data[1].children = a;
-    var amount = 0,i = 0;
-    while(i<a.length)
-    {
-      amount += parseInt(a[i].data.Amount);
-      i+=1;
-    }
-    this.data[1].data.Amount = amount.toString();   
-    this.cds.detectChanges();
-    this.dataSource = this.dataSourceBuilder.create(this.data);    
   }
 
   ngOnDestroy() {
@@ -173,12 +127,18 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   private data: TreeNode<FSEntry>[] = [
     {
-      data: { Type: "Out Transactions", Amount: "0", kind:'dir'},
-      children: [],
+      data: { Type: "Out Transactions", Amount: "100", kind:'dir'},
+      children: [
+        { data: { Type: "Transaction 1", Amount: "50", kind: 'doc' } },
+        { data: { Type: "Transaction 2", Amount: "50", kind: 'doc' } },
+      ],
     },
     {
-      data: { Type: "In Transactions", Amount: "0", kind:'dir' },
-      children: [],
+      data: { Type: "In Transactions", Amount: "150", kind:'dir' },
+      children: [
+        { data: { Type: "Transaction 1", Amount: "40", kind: 'doc' } },
+        { data: { Type: "Transaction 2", Amount: "60", kind: 'doc' } },
+      ],
     },
   ];
 
