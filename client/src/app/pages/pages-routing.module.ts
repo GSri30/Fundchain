@@ -26,7 +26,7 @@ const routes: Routes = [{
       component: UserinfoComponent,
     },
     {
-      path:'viewpost',
+      path:'viewpost/:id',
       component: ViewpostComponent,
     },
     {

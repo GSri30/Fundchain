@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FluidMeterComponent } from './fluid-meter/fluid-meter.component';
 import { Component, OnInit } from '@angular/core';
@@ -19,11 +20,9 @@ interface OrganizationInfo{
 export class ViewpostComponent implements OnInit {
 
   constructor(
-
     private clipboardApi: ClipboardService,
-    private dialogService: NbDialogService
-    private clipboardApi: ClipboardService
-
+    private dialogService: NbDialogService,
+    private route: ActivatedRoute
   ) { }
 
   content: string = "abcdefghijklmnopqrstuvwxyz";
@@ -38,10 +37,12 @@ export class ViewpostComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const routeparams = this.route.snapshot.paramMap;
+    const orgid = <String>routeparams.get('id');
+    console.log(orgid);
     this.remaining = this.Goal - this.reached;
     this.fluidMeter();
     this.getOrganizationDetails();
-
   }
 
   CopyText(content: string)
@@ -81,9 +82,6 @@ export class ViewpostComponent implements OnInit {
 
   }
 
-
-  }
-
   getOrganizationDetails()
   {
     var titles = ['Name Of the Organization', 'Organization Type', 'Cause', 'Target Amount', 'Description'];
@@ -96,7 +94,6 @@ export class ViewpostComponent implements OnInit {
       })
     }
   }
-
 
   open()
   {
