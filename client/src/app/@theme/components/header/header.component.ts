@@ -8,6 +8,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { TaquitoService } from '../../../taquito.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -40,15 +41,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private taquito: TaquitoService,
-              private userinfo : UserinfoService
+              private userinfo : UserinfoService,
+              private router: Router
               ) {
   }
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
-    localStorage.clear();
-    sessionStorage.clear();
-    sessionStorage.setItem('isUpdate', 'true');
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users.nick);
@@ -107,5 +106,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.wallet = false;
     }
     this.userinfo.Wallet.next(this.wallet);  
+  }
+
+  logout(){
+    this.router.navigate(['']);
   }
 }

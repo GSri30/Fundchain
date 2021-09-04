@@ -9,11 +9,13 @@ import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { AddorgComponent } from './addorg/addorg.component';
 //import { LoginComponent } from './login/login.component';
+import { IpfsComponent } from './ipfs/ipfs.component';
+import { LoginComponent } from '../login/login.component';
 
 
 const routes: Routes = [{
   path: '',
-  component: PagesComponent,
+  component: PagesComponent,canActivate:[LoginComponent],
   children: [
     {
       path: 'dashboard',
@@ -30,6 +32,10 @@ const routes: Routes = [{
     {
       path:'addorg',
       component: AddorgComponent,
+    },
+    {
+      path: 'ipfs',
+      component: IpfsComponent,
     },
     {
       path: '',

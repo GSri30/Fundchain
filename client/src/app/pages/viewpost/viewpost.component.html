@@ -1,21 +1,82 @@
+<h1>Dhamodhara Siddalayam</h1>
+
 <div class = "row">
-     <div class="col-xxxl-8 col-xxl-12 col-md-7">
+     <div class="col-xxxl-7 col-xxl-12 col-md-7">
           <ngx-orgpics></ngx-orgpics>
      </div>
 
-     <div class = "col-xxxl-4 col-md-5">
+     <div class = "col-xxxl-5 col-md-5">
           <nb-card>
+               <div class = "row">
+                    <div class = "col-xxxl-6 col-xxl-12 col-md-7 ">
+                         <div id="fluid-meter" class = "fluid"></div>
+                    </div>
+                    <div class = "col-xxxl-6 col-md-5 statistics">
+                         <div class = "stat">
+                              <div class = "stat">
+                                   <div class="card-subheading">Goal</div>
+                                   <h4 class="card-heading">{{Goal + " XTz"}}</h4>
+                              </div>
+                              <div class = "stat">
+                                   <div class="card-subheading">Reached</div>
+                                   <h4 class="card-heading">{{reached + " XTz"}}</h4>
+                              </div>
+                              <div class = "stat">
+                                   <div class="card-subheading">Remaing</div>
+                                   <h4 class="card-heading">{{remaining + " XTz"}}</h4>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </nb-card>
+          <nb-card>
+               <div class = "qrcode">
+                    <ngx-qrcode
+                         [elementType]="elementType"
+                         [value]="data"
+                         cssClass = "qrcode"
+                         >
+                    </ngx-qrcode>    
+               </div>
                <div class="container">
                     <div class = "label">
-                         UUID
+                         QR Code Address
                     </div>
                     <div class = "copy-text">
-                         <input type = "text" class = "text" value = "abcdefghijklmnopqrstuvwxyz">
-                         <button>
+                         <input type = "text" class = "text" value = {{content}} readonly>
+                         <button (click) = "CopyText($event)">
                               <i class = "fa fa-clone"></i>
                          </button>
                     </div>
                </div>
+          </nb-card>
+     </div>
+</div>
+
+<div class = "row">
+     <div class="col-xxxl-8 col-xxl-12 col-md-7">
+          <nb-card size = "medium" class = "table-card" accent = "info">
+               <table class = "table">
+                    <tbody class = "orginfo">
+                         <tr *ngFor = "let org of OrgInfo">
+                              <th scope = "row"></th>
+                              <td><h5>{{org.title}}</h5></td>
+                              <td>{{org.data}}</td>
+                         </tr>
+                    </tbody>
+               </table>
+          </nb-card>
+     </div>
+     <div class="col-xxxl-4 col-md-5">
+          <nb-card>
+               <nb-card-body>
+                    <div class = "donate">
+                         <input type="number" nbInput fullWidth fieldSize = "large" placeholder="Amount of money you want to donate">
+                    </div>
+                    <div class = "donate-button">
+                         <button nbButton status="success" (click) = "open()">Donate</button>
+                    </div>
+               </nb-card-body>
           </nb-card>
      </div>
 </div>
