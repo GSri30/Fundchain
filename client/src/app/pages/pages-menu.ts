@@ -26,6 +26,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Education',
     icon: 'book-open-outline',
+    link: '/pages/education',
     home: true,
   },
   {

@@ -1,3 +1,4 @@
+import { EducationModule } from './education/education.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
@@ -18,6 +19,7 @@ import { IpfsComponent } from './ipfs/ipfs.component';
 import { LoginComponent } from '../login/login.component';
 import { FluidMeterComponent } from './viewpost/fluid-meter/fluid-meter.component';
 import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/confirmation-dialog.component';
+import { EducationComponent } from './education/education.component';
 
 
 
@@ -37,6 +39,7 @@ import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/conf
     NgxQRCodeModule,
     NbInputModule,
     NbDialogModule.forChild(),
+    EducationModule
   ],
   declarations: [
     PagesComponent,

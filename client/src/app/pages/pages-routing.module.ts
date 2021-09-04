@@ -1,3 +1,4 @@
+import { EducationComponent } from './education/education.component';
 import { ViewpostComponent } from './viewpost/viewpost.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserinfoComponent } from './userinfo/userinfo.component';
@@ -36,6 +37,10 @@ const routes: Routes = [{
     {
       path: 'ipfs',
       component: IpfsComponent,
+    },
+    {
+      path: 'education',
+      component: EducationComponent,
     },
     {
       path: '',

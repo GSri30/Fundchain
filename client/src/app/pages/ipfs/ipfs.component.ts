@@ -5,6 +5,8 @@ import { urlSource } from 'ipfs-http-client';
 const {create}=require('ipfs-http-client');
 // https://www.npmjs.com/package/ipfs-http-client#usage
 
+import {secret} from '../../../environments/secret';
+
 class Files{
   list:Array<File>;
   names:Array<string>;
@@ -28,7 +30,24 @@ export class IpfsComponent {
   client:any;
   files:Files;
   hashes :Array<string> = [];
-  constructor() { }
+
+  xtz:any;
+  constructor() {
+    fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
+    .then(data=>{
+      this.xtz=(data["rates"].XTZ);
+      console.log(this.dollorTOtez(1));
+      console.log(this.inrTOtez(1));
+    });
+  }
+
+  dollorTOtez(dollors){
+    return dollors/this.xtz;
+  }
+
+  inrTOtez(inr){
+    return inr/(this.xtz*73);
+  }
 
   // async ngOnInit(): Promise<void> {
   //   this.files= new Files();

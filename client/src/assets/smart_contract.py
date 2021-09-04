@@ -29,9 +29,12 @@ class FundChain(sp.Contract):
                                 )
                             ),
         posts=sp.map(
+                    # puid
                     tkey=sp.TString,
                     tvalue=sp.TRecord(
-                        owner_uid = sp.TString,
+                        owner_uuid = sp.TString,
+                        # forgot to add this before
+                        wallet_uuid = sp.TString,
                         name = sp.TString,
                         institution = sp.TString,
                         description = sp.TString,
@@ -42,15 +45,36 @@ class FundChain(sp.Contract):
                         goal_reached=sp.TBool,
                         address = sp.TAddress,
                         pictures = sp.TList(sp.TString)
+
+                        deadline = sp.TTimestamp,
+                        locked_mutez = sp.TMutez,
+                        upvotes = sp.TNat,
+                        downvotes = sp.TNat,
                         # supports=sp.TNat,
                         # reports=sp.TNat,
                         # verified=sp.TBool
                     )
                 ),
+        conditional_funding=sp.map(
+                                # uuid (org or individual)
+                                tkey=sp.TString,
+                                tvalue=sp.TList(
+                                    sp.TRecord(
+                                        dest_uuid = sp.TString,
+                                        # get deadline, original likes, original dislikes using this
+                                        puid = sp.TString,
+                                        name = sp.TString,
+                                        isOrg = sp.TBool,
+                                        trigger_likes = sp.TNat,
+                                        trigger_dislikes = sp.TNat,
+                                        locked_fund = sp.TMutez,
+                                    )
+                                )
+        ),
         total_fund=sp.mutez(0),
         total_donors = sp.nat(0),
         total_goals_reached=sp.nat(0),
-        total_fundings=sp.nat(0)            
+        total_fundings=sp.nat(0)
         )
     '''
     Setters
@@ -63,9 +87,9 @@ class FundChain(sp.Contract):
         '''
         sp.set_type(params.uuid,sp.TString)
         sp.set_type(params.email,sp.TString)
-        
+
         sp.verify(self.data.users.contains(params.uuid)==False)
-        
+
         self.data.users[params.uuid]=sp.record(
                                         uuid=params.uuid,
                                         datetime=sp.now,
@@ -105,19 +129,19 @@ class FundChain(sp.Contract):
             timestamp=sp.now
         ))
         # sp.send(self.data.posts[params.to_puid].address, params.amount, message = None)
-        
+
         sp.if self.data.users[params.from_uuid].donated_mutez == sp.mutez(0):
             self.data.total_donors += 1
-        
+
         self.data.posts[params.to_puid].received_mutez += params.amount
         self.data.users[params.from_uuid].donated_mutez += params.amount
         self.data.total_fund += params.amount
         self.data.total_fundings += 1
-        
+
         sp.if self.data.posts[params.to_puid].received_mutez > self.data.posts[params.to_puid].goal:
             self.data.posts[params.to_puid].goal_reached = True
             self.data.total_goals_reached += 1
-    
+
     @sp.entry_point
     def add_post(self,params):
         sp.verify(self.data.posts.contains(params.puid) == False)
@@ -130,9 +154,9 @@ class FundChain(sp.Contract):
         sp.set_type(params.goal,sp.TMutez)
         sp.set_type(params.address,sp.TAddress)
         sp.set_type(params.pictures,sp.TList(sp.TString))
-        
+
         self.data.posts[params.puid]=sp.record(
-            owner_uid = params.uuid,
+            owner_uuid = params.uuid,
             name = params.name,
             institution = params.institution,
             description = params.description,
@@ -149,11 +173,11 @@ class FundChain(sp.Contract):
         )
         self.data.transactions[params.puid] = sp.list([])
         self.data.users[params.uuid].posts.push(params.puid)
-    
+
     # @sp.entry_point
     # def support(self):
     #     pass
-    
+
     # @sp.entry_point
     # def report(self):
     #     pass
