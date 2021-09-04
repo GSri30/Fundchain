@@ -41,4 +41,4 @@ testem.log
 Thumbs.db
 
 # Secret
-src/environments/secret.ts
+# src/environments/secret.ts
