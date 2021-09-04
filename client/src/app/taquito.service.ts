@@ -168,7 +168,9 @@ export class TaquitoService {
                     description : val.description,
                     progress : Math.floor((val.received_mutez.c/val.goal.c)*100),
                     pic :"https://ipfs.io/ipfs/" + val.pictures[0],
-                    goal : val.goal
+                    goal : val.goal,
+                    deadline : val.deadline,
+                    locked_funds : val.locked_fund
                 });
             }
         });

@@ -84,6 +84,8 @@ export class AddorgComponent implements OnInit {
   }
   async addOrg(name,description,goal,post_type,institution,imageInput,deadline):Promise<number>
   {    
+  
+    goal =Math.floor(parseFloat(goal.substring(0,goal.length-4))*1000000) as number;
     if((name==="" || description==="" || goal==="" || post_type==="" || imageInput.files.length===0)){
       this.formerr=true;
       return 0;

@@ -75,7 +75,7 @@ export class ViewpostComponent implements OnInit{
     });
     const routeparams = this.route.snapshot.paramMap;
     this.puid = <String>routeparams.get('id');
-    this.lockedfunds = 1111;//Change locked funds here
+    this.lockedfunds = 0;
     await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
     this.cds.detectChanges();
@@ -133,18 +133,18 @@ export class ViewpostComponent implements OnInit{
     var Data = ['-', '-', '-', '-', '-','-'];
 
     const post:any = await this.taqutio.get_post(puid);
-    Data[0] = post.name;
-    Data[1] = post.post_type;
-    Data[2] = post.institution;
-    Data[3] = post.goal+" tez";
-    Data[4] = post.description;
-    Data[5] = 'deadline';//add deadline here
     this.Name = Data[0];
     this.puid = puid;
     this.data = post.address;
-    this.Goal = post.goal;
-    this.reached = post.received_mutez;
-    this.lockedfunds = 111;//change locked funds here
+    this.Goal = Math.floor(post.goal/1000000);
+    this.reached = Math.floor(post.received_mutez/1000000);
+    this.lockedfunds = Math.floor(post.locked_fund/1000000);//change locked funds here
+    Data[0] = post.name;
+    Data[1] = post.post_type;
+    Data[2] = post.institution;
+    Data[3] = this.Goal+" tez";
+    Data[4] = post.description;
+    Data[5] = post.deadline;//add deadline here
 
     for(let i=0; i<titles.length; i++)
     {
@@ -186,9 +186,9 @@ export class ViewpostComponent implements OnInit{
     }
   }
 
-  fund(amount: number, comment: string)
+  fund(amount: string, comment: string)
   {
-    if(amount==0){
+    if(amount=="0 tez"){
       this.formerr=true;
       return 0;
     }
@@ -198,16 +198,16 @@ export class ViewpostComponent implements OnInit{
     this.dialogService.open(ConfirmationDialogComponent, {
         context:{
           puid: this.puid as string,
-          amount: amount,
+          amount: Math.floor(parseFloat(amount.substring(0,amount.length-4))*1000000) as number,
           comment: comment,
         },
         closeOnBackdropClick: false,
       })
   }
 
-  conditional(amount: number, comment: string)
+  conditional(amount: string, comment: string)
   {
-    if(amount==0){
+    if(amount=="0 tez"){
       this.formerr=true;
       return 0;
     }
@@ -217,7 +217,7 @@ export class ViewpostComponent implements OnInit{
       this.dialogService.open(ConditionalFundDialogComponent, {
         context:{
           puid: this.puid as string,
-          amount: amount,
+          amount: Math.floor(parseFloat(amount.substring(0,amount.length-4))*1000000) as number,
           comment: comment,
         }
       })
