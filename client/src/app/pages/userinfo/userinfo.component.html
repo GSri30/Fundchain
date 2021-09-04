@@ -4,105 +4,71 @@
 
         <div class="row gutters-sm">
             <div class="col-md-4 mb-3">
-                <nb-card size="small" class="table-card">
+                <nb-card size="small" class="table-card" accent="info">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="{{user?.picture}}" alt="Admin" class="rounded-circle" width="150">
-                            <!-- <h1>Hey {{Name}}!</h1> -->
-                        </div>
-                        <!-- <div class="row">
-                            <span></span>
-                            <div class="col-sm-5">
-                                <h6>OrgXP</h6>
-                            </div>
-                            <div class="col-sm-5 text-secondary">
-                                <h6>{{orgXP}}</h6>
+                            <div class="mt-3">
+                                <h1>Hey {{Name}}!</h1>
                             </div>
                         </div>
-                        <div class="row">
-                            <span></span>
-
-                            <div class="col-sm-5">
-                                <h6 class="mb-0">VerifierXP</h6>
-                            </div>
-                            <div class="col-sm-5 text-secondary">
-                                <h6>{{verifierXP}}</h6>
-                            </div>
-                        </div> -->
-                        <table class="table">
-                            <tbody class="orginfo">
-                                <tr>
-                                    <th scope="row" style="border-color: #222b45 ;"></th>
-                                    <td style="border-color: #222b45;" class="org-title">
-                                        <h6>orgXP
-                                            <nb-icon [icon]="xpicon2" pack="eva"></nb-icon>
-                                        </h6>
-                                    </td>
-                                    <td style="border-color: #222b45;" class="org-data">{{orgXP}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" style="border-color: #222b45;"></th>
-                                    <td class="org-title" style="border-color: #222b45;">
-                                        <h6>verifierXP
-                                            <nb-icon [icon]="xpicon" pack="eva"></nb-icon>
-                                        </h6>
-                                    </td>
-                                    <td style="border-color: #222b45;" class="org-data">{{verifierXP}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </nb-card>
 
             </div>
             <div class="col-md-8">
+                <nb-card size="small" class="table-card" accent="info">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Name</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <h6>{{Name}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Email</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <h6>{{Email}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">UUID</h6>
+                            </div>
+                            <div class="col-sm-9 text-secondary">
+                                <h6>{{UUID}}</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h6 class="mb-0">Wallet</h6>
+                            </div>
+                            <ng-container *ngIf=Wallet>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6> Connected</h6>
+                                    <nb-icon [icon]="cross-outline" pack="eva"></nb-icon>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf=!Wallet>
+                                <div class="col-sm-9 text-secondary">
+                                    <h6> Not Connected</h6>
+                                    <nb-icon [icon]="checkmark-outline" pack="eva"></nb-icon>
+                                </div>
+                            </ng-container>
 
-                <nb-card>
-                    <nb-card-header>
-                        <h5>Profile</h5>
-                    </nb-card-header>
-                    <nb-card-body>
-                        <table class="table">
-                            <tbody class="orginfo">
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td class="org-title">
-                                        <h6>Name</h6>
-                                    </td>
-                                    <td class="org-data">{{Name}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td class="org-title">
-                                        <h6>Email</h6>
-                                    </td>
-                                    <td class="org-data">{{Email}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td class="org-title">
-                                        <h6>UUID</h6>
-                                    </td>
-                                    <td class="org-data">{{UUID}}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"></th>
-                                    <td class="org-title">
-                                        <h6>Wallet</h6>
-                                    </td>
-                                    <td class="org-data" *ngIf=Wallet>Connected
-                                        <nb-icon [icon]="tick" pack="eva"></nb-icon>
-                                    </td>
-                                    <td class="org-data" *ngIf=!Wallet>Not Connected
-                                        <nb-icon [icon]="cross" pack="eva"></nb-icon>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </nb-card-body>
+                        </div>
+                        <hr>
+
+                    </div>
                 </nb-card>
+
 
             </div>
         </div>
@@ -113,26 +79,26 @@
     <nb-card-body>
 
 
-        <table [nbTreeGrid]="dataSource " [nbSort]="dataSource " (sort)="updateSort($event) ">
+        <table [nbTreeGrid]="dataSource" [nbSort]="dataSource" (sort)="updateSort($event)">
 
-            <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns "></tr>
-            <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns "></tr>
+            <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="allColumns"></tr>
+            <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: allColumns"></tr>
 
-            <ng-container [nbTreeGridColumnDef]="customColumn ">
-                <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn) " *nbTreeGridHeaderCellDef>
+            <ng-container [nbTreeGridColumnDef]="customColumn">
+                <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(customColumn)" *nbTreeGridHeaderCellDef>
                     {{customColumn}}
                 </th>
-                <td nbTreeGridCell *nbTreeGridCellDef="let row ">
-                    <ngx-fs-icon-ui [kind]="row.data.kind " [expanded]="row.expanded "></ngx-fs-icon-ui>
+                <td nbTreeGridCell *nbTreeGridCellDef="let row">
+                    <ngx-fs-icon-ui [kind]="row.data.kind" [expanded]="row.expanded"></ngx-fs-icon-ui>
                     {{row.data[customColumn]}}
                 </td>
             </ng-container>
 
-            <ng-container *ngFor="let column of defaultColumns; let index=i ndex " [nbTreeGridColumnDef]="column " [showOn]="getShowOn(index) ">
-                <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column) " *nbTreeGridHeaderCellDef>
+            <ng-container *ngFor="let column of defaultColumns; let index = index" [nbTreeGridColumnDef]="column" [showOn]="getShowOn(index)">
+                <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column)" *nbTreeGridHeaderCellDef>
                     {{column}}
                 </th>
-                <td nbTreeGridCell *nbTreeGridCellDef="let row ">{{row.data[column] || '-'}}</td>
+                <td nbTreeGridCell *nbTreeGridCellDef="let row">{{row.data[column] || '-'}}</td>
             </ng-container>
 
         </table>

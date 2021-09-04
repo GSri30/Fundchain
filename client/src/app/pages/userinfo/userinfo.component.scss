@@ -1,13 +1,5 @@
 @import 'src/app/@theme/styles/themes';
 @include nb-install-component() {
-    nb-card-body {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-    nb-card-footer {
-        text-align: right;
-    }
     button[nbTreeGridRowToggle] {
         background: transparent;
         border: none;
@@ -51,18 +43,5 @@
         .nb-column-items {
             width: 23%;
         }
-    }
-    span {
-        padding-left: 16%
-    }
-    .org-data {
-        font-size: 15px;
-    }
-    .org-title {
-        font-weight: bold;
-    }
-    .orginfo {
-        font-size: 18px;
-        color: white;
     }
 }
