@@ -14,6 +14,7 @@ import { OrgpicsComponent } from './viewpost/orgpics/orgpics.component';
 import { QrcodeComponent } from './qrcode/qrcode.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
+import { IpfsComponent } from './ipfs/ipfs.component';
 
 
 
@@ -38,6 +39,7 @@ import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
     OrgpicsComponent,
     //LoginComponent,
     QrcodeComponent,
+    IpfsComponent,
   ],
 })
 export class PagesModule {

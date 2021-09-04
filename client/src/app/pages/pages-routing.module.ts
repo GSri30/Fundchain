@@ -9,6 +9,7 @@ import { PagesComponent } from './pages.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { AddorgComponent } from './addorg/addorg.component';
 //import { LoginComponent } from './login/login.component';
+import { IpfsComponent } from './ipfs/ipfs.component';
 
 
 const routes: Routes = [{
@@ -30,6 +31,10 @@ const routes: Routes = [{
     {
       path:'addorg',
       component: AddorgComponent,
+    },
+    {
+      path: 'ipfs',
+      component: IpfsComponent,
     },
     {
       path: '',
