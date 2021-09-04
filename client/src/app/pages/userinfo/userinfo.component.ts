@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
+  NbIconLibraries,
   NbMediaBreakpointsService,
   NbMenuService,
   NbSidebarService,
@@ -54,7 +55,8 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   customColumn = "Type";
   defaultColumns = ["Amount"];
   allColumns = [this.customColumn, ...this.defaultColumns];
-
+  verifierXP:Number = 2000;
+  orgXP:Number = 1000;
   dataSource: NbTreeGridDataSource<FSEntry>;
 
   sortColumn: string;
@@ -75,6 +77,11 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   ];
 
   currentTheme = "cosmic";
+  tick : String = "checkmark-square-2";
+  cross : String = "close-square";
+  xpicon : String ="arrowhead-up-outline";
+  xpicon2 : String ="arrow-circle-up-outline";
+
 
   constructor(
     private sidebarService: NbSidebarService,
@@ -88,6 +95,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private cds: ChangeDetectorRef,
     private ad: ApplicationRef,
     private taquito: TaquitoService,
+    private iconsLibrary: NbIconLibraries
   ) 
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
