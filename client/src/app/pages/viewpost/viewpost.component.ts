@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FluidMeterComponent } from './fluid-meter/fluid-meter.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import FluidMeter from '../../../js/js-fluid-meter.js';
 import {NbDialogService} from '@nebular/theme';
@@ -38,14 +38,13 @@ export class ViewpostComponent implements OnInit {
   remaining: number = 0;
 
   OrgInfo: OrganizationInfo[] = [];
-  puid:string;
+  @Output() puid:String;
   async ngOnInit(): Promise<void> {
     const routeparams = this.route.snapshot.paramMap;
-    const puid = <String>routeparams.get('id');
-    // console.log(orgid);
+    this.puid = <String>routeparams.get('id');    
     this.remaining = this.Goal - this.reached;
+    await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
-    this.getOrganizationDetails(puid);
   }
 
   CopyText(content: string)
@@ -123,7 +122,7 @@ export class ViewpostComponent implements OnInit {
     console.log('c');
     this.dialogService.open(ConfirmationDialogComponent, {
         context:{
-          puid: this.puid,
+          puid: this.puid as string,
           amount: amount,
           comment: comment,
         },

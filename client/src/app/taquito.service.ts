@@ -18,11 +18,11 @@ export class TaquitoService {
     constructor() {}
     
     public async set_contract() {
-        if(this.storage == undefined) 
-        {
+        // if(this.storage == undefined) 
+        // {
             this.contract = await this.taquito.wallet.at(this.contract_address);
             this.storage = await this.contract.storage();
-        }
+        // }
     }
 
     public async connect_wallet() {
@@ -34,6 +34,16 @@ export class TaquitoService {
         });
         this.taquito.setProvider({ wallet: this.wallet });    
         return true;
+    }
+    public async get_pics(puid):Promise<Array<string>>
+    {
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        var pics =  this.storage.posts.get(puid).pictures;
+        for(let i = 0;i<pics.length;i++)
+        {
+            pics[i] = "https://ipfs.io/ipfs/" + pics[i];
+        }
+        return pics;
     }
 
     public async get_specific_from_transactions(uuid):Promise<Array<object>> {        
@@ -92,6 +102,40 @@ export class TaquitoService {
         });
         console.log(transactions_list[0]);
         return transactions_list;
+    }
+
+    public async graph()
+    {
+        var month_list:any = {
+            1 : 0,
+            2 : 0,
+            3 : 0,
+            4 : 0,
+            5 : 0,
+            6 : 0,
+            7 : 0,
+            8 : 0,
+            9 : 0,
+            10 : 0,
+            11 : 0,
+            12 : 0
+        };
+        // var curr_date = new Date();
+        // const curr_month = curr_date.getMonth() + 1;      
+        
+        // if(this.storage == undefined)this.storage = await this.contract.storage();
+        // this.storage.transactions.forEach((val: any, key: string) => {
+        //     val.forEach(element => {
+                
+        //         const trans_month = parseInt(element.timestamp.substring(5,7));
+        //         console.log(trans_month);
+        //         if(curr_month >= trans_month && curr_month == trans_month)
+        //         else
+        //     });
+        // });
+        // month_list.forEach((val : Number , key : Number) => {
+            
+        // });
     }
 
     //get user

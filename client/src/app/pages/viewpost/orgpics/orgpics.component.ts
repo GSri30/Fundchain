@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit , Input} from '@angular/core';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { NbComponentSize, NbMediaBreakpointsService, NbThemeService } from '@nebular/theme';
-
 import { Camera, SecurityCamerasData } from '../../../@core/data/security-cameras';
+import { TaquitoService } from '../../../taquito.service';
 
 @Component({
   selector: 'ngx-orgpics',
@@ -11,10 +11,11 @@ import { Camera, SecurityCamerasData } from '../../../@core/data/security-camera
   styleUrls: ['./orgpics.component.scss']
 })
 export class OrgpicsComponent implements OnInit, OnDestroy {
-
+  
+  @Input() puid:string;
   private destroy$ = new Subject<void>();
 
-  cameras: Camera[];
+  cameras: Camera[]=[];
   selectedCamera: Camera;
   isSingleView = false;
   actionSize: NbComponentSize = 'medium';
@@ -23,15 +24,28 @@ export class OrgpicsComponent implements OnInit, OnDestroy {
     private themeService: NbThemeService,
     private breakpointService: NbMediaBreakpointsService,
     private securityCamerasService: SecurityCamerasData,
+    private taquito : TaquitoService
   ) {}
 
-  ngOnInit() {
-    this.securityCamerasService.getCamerasData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((cameras: Camera[]) => {
-        this.cameras = cameras;
-        this.selectedCamera = this.cameras[0];
-      });
+  async ngOnInit() {
+    await this.taquito.set_contract();
+    const pics = await this.taquito.get_pics(this.puid);
+    for(let i=1; i<=pics.length; i++)
+    {
+      var temp = "picture #";
+      var temp2 = temp+i;
+      this.cameras.push({
+        title: temp2,
+        source: pics[i-1],
+      })
+    }
+    this.selectedCamera = this.cameras[0];
+    // this.securityCamerasService.getCamerasData()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((cameras: Camera[]) => {
+    //     this.cameras = cameras;
+    //     this.selectedCamera = this.cameras[0];
+    //   });
 
     const breakpoints = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()

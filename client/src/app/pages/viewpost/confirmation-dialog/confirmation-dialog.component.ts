@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
+import { Base64 } from 'js-base64';
 import { TaquitoService } from '../../../taquito.service';
 
 
@@ -26,11 +27,11 @@ export class ConfirmationDialogComponent implements OnInit {
 
   async Okay()
   {
-    // await this.taquito.send_fund();
+    await this.taquito.send_fund(Base64.encode(sessionStorage.getItem('email'),true),this.puid,this.amount,this.comment);
     this.ref.close();
-    console.log(this.puid);
-    console.log(this.amount);
-    console.log(this.comment);
+    // console.log(this.puid);
+    // console.log(this.amount); 
+    // console.log(this.comment);
     console.log("confirmed");
   }
 
