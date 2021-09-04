@@ -20,6 +20,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true
   },
   {
+    title: 'viewpost',
+    icon: 'plus-outline',
+    link: '/viewpost',
+    home: true
+  },
+  {
     title: 'ORGANIZATIONS',
     group: true,
   },

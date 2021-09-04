@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Sawo from "sawo";
-import {secret} from "../../../environments/secret";
+import {secret} from "../../environments/secret";
 import { encode, decode } from 'js-base64';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 

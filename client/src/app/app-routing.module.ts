@@ -1,13 +1,19 @@
+import { LoginComponent } from './login/login.component';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'pages',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
   },
-  { path: '**', redirectTo: '' },
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  { path: '**', redirectTo: 'login' },
 ];
 
 const config: ExtraOptions = {
