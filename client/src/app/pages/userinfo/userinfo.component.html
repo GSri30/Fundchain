@@ -7,7 +7,7 @@
                 <nb-card size="small" class="table-card">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="{{user?.picture}}" alt="Admin" class="rounded-circle" width="150">
+                            <img src="{{user?.picture}}" alt="Anonymous" class="rounded-circle" width="150">
                             <!-- <h1>Hey {{Name}}!</h1> -->
                         </div>
                         <!-- <div class="row">
@@ -123,16 +123,32 @@
                     {{customColumn}}
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row ">
-                    <ngx-fs-icon-ui [kind]="row.data.kind " [expanded]="row.expanded "></ngx-fs-icon-ui>
-                    {{row.data[customColumn]}}
+
+                    <div style="width: 100%;">
+                        <div style="width: 50%; float: left;">
+                            <ngx-fs-icon-ui [kind]="row.data.kind " [expanded]="row.expanded "></ngx-fs-icon-ui>
+                            {{row.data[customColumn]}}
+                        </div>
+                        <div style="margin-left: 50%; ">
+                            <ng-container *ngIf=isDir(row.data.kind)>
+                                <ng-container *ngIf=isOut(row.data.parent)>
+                                    <button style="float: right;" nbButton status="primary" outline (click)="Reclaim(row.data.Type)">Reclaim</button>
+                                </ng-container>
+                                <ng-container *ngIf=!isOut(row.data.parent)>
+                                    <button style="float: right;" nbButton status="primary" outline (click)="Claim(row.data.Type)">Claim</button>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
                 </td>
             </ng-container>
 
-            <ng-container *ngFor="let column of defaultColumns; let index=i ndex " [nbTreeGridColumnDef]="column " [showOn]="getShowOn(index) ">
+            <ng-container *ngFor="let column of defaultColumns; let index=index " [nbTreeGridColumnDef]="column " [showOn]="getShowOn(index) ">
                 <th nbTreeGridHeaderCell [nbSortHeader]="getSortDirection(column) " *nbTreeGridHeaderCellDef>
                     {{column}}
                 </th>
-                <td nbTreeGridCell *nbTreeGridCellDef="let row ">{{row.data[column] || '-'}}</td>
+                <td nbTreeGridCell *nbTreeGridCellDef="let row ">{{row.data[column] || '-'}} </td>
+
             </ng-container>
 
         </table>

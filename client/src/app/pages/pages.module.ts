@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { FarmingModule } from './farming/farming.module';
 import { NatureModule } from './nature/nature.module';
 import { OldagehomeModule } from './oldagehome/oldagehome.module';
@@ -33,7 +32,6 @@ import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/conf
 
 @NgModule({
   imports: [
-    CommonModule,
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,

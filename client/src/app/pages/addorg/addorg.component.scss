@@ -34,3 +34,12 @@ button {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+.center{
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
