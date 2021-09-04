@@ -23,7 +23,7 @@ export class FcChartComponent implements OnDestroy {
   chartPanelSummary: PanelSummary[] = [
     {
       title: 'Last Week',
-      count: 400
+      count: 60
     },
     {
       title: 'Last Month',
@@ -31,7 +31,7 @@ export class FcChartComponent implements OnDestroy {
     },
     {
       title: 'Last Year',
-      count: 600
+      count: 2300
     },
   ];
 

@@ -1,3 +1,4 @@
+import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
 import { UserinfoService } from "./userinfo.service";
 import { Base64 } from 'js-base64';
 
@@ -11,6 +12,7 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
+  NbDialogService,
   NbIconLibraries,
   NbMediaBreakpointsService,
   NbMenuService,
@@ -57,8 +59,8 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   customColumn = "Type";
   defaultColumns = ["Amount"];
   allColumns = [this.customColumn, ...this.defaultColumns];
-  verifierXP:Number = 2000;
-  orgXP:Number = 1000;
+  verifierXP:number = 0;
+  orgXP:number = 0;
   dataSource: NbTreeGridDataSource<FSEntry>;
 
   sortColumn: string;
@@ -97,7 +99,9 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private cds: ChangeDetectorRef,
     private ad: ApplicationRef,
     private taquito: TaquitoService,
-    private iconsLibrary: NbIconLibraries
+    private iconsLibrary: NbIconLibraries,
+    private dialogService: NbDialogService,
+
   )
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
@@ -128,6 +132,9 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
     this.update_out_transactions();
     this.update_in_transactions();
+    this.verifierXP = await this.taquito.get_uxp(Base64.encode(sessionStorage.getItem('email'),true));
+    this.orgXP = await this.taquito.get_oxp(Base64.encode(sessionStorage.getItem('email'),true));
+    this.cds.detectChanges();
   }
 
   async update_out_transactions()
@@ -139,7 +146,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     var amount = 0,i = 0;
     while(i<a.length)
     {
-      amount += parseInt(a[i].data.Amount)
+      amount += parseFloat(a[i].data.Amount)
       a[i].data.parent = "Out";
       i+=1
     }
@@ -157,7 +164,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     var amount = 0,i = 0;
     while(i<a.length)
     {
-      amount += parseInt(a[i].data.Amount);
+      amount += parseFloat(a[i].data.Amount);
       a[i].data.parent = "In";
       i+=1;
     }
@@ -212,13 +219,53 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     await this.taquito.set_contract();
     var x = await this.taquito.check_claim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
     console.log(x);
-    // if(x == 0) await this.taquito.claim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    var content : string;
+    if(x == 0){
+      await this.taquito.claim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    } 
+    else if(x==1){
+      content = "This fund is not mature. Please wait until the deadline of the cause!";
+    }
+    else if(x==2){
+      content = "This fund was already sent to the organization.";
+    }
+    else if(x==3){
+      content = "Transaction not found.";
+    }
+    else if(x==4){
+      content = "Already claimed."
+    }
+    this.dialogService.open(RefundDialogComponent, {
+      context:{
+        content : content
+      },
+    })
   }
   async Reclaim(puid,trans_id){
     await this.taquito.set_contract();
     var x = await this.taquito.check_reclaim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
     console.log(x);
-    if(x == 0) await this.taquito.reclaim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    var content : string;
+    if(x == 0) {
+      await this.taquito.reclaim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    }
+    else if(x==1){
+      content = "This fund is not mature. Please wait until the deadline of the cause!";
+    }
+    else if(x==2){
+      content = "This fund was already sent to the organization.";
+    }
+    else if(x==3){
+      content = "Transaction not found.";
+    }
+    else if(x==4){
+      content = "Already claimed."
+    }
+    this.dialogService.open(RefundDialogComponent, {
+      context:{
+        content : content
+      },
+    })
   }
 }
 
