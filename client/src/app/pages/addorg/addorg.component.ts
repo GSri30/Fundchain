@@ -22,6 +22,9 @@ export class AddorgComponent implements OnInit {
   formerr : boolean;
   imgerr : boolean;
   selectedFile : ImageSnippet;
+  curr: string;
+  disp: string;
+  xtz: any;
   constructor(private userinfo : UserinfoService,
               private cds : ChangeDetectorRef,
               private taquito: TaquitoService,
@@ -29,6 +32,15 @@ export class AddorgComponent implements OnInit {
     ) {}
 
    ngOnInit():void{
+      //! Need to uncomment at the end!!
+
+    // fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
+    // .then(data=>{
+    //   this.xtz=(data["rates"].XTZ);
+    //   this.disp = this.inrTOtez(this.con);
+    // });
+
+    this.xtz=5.261685;
     this.userinfo.Wallet.subscribe((status) => {
       this.Wallet = status;
       this.cds.detectChanges();
@@ -91,5 +103,59 @@ export class AddorgComponent implements OnInit {
     
     const op = await this.taquito.add_new_post(name,description,institution,post_type,Base64.encode(sessionStorage.getItem('email'),true),goal,images,dl);
     return 1;
+  }
+  dollorTOtez(dollors) : number{
+    return (dollors/this.xtz);
+  }
+
+  inrTOtez(inr) : number{
+    return (inr/(this.xtz*73));
+  }
+  checkinp(name,description,goal,post_type,institution,imageInput,amount:number){
+    if((name==="" || description==="" || goal==="" || post_type==="" || imageInput.files.length===0)){
+      this.formerr=true;
+    }
+    else{
+      this.formerr=false;
+    }
+    if(amount == 0){
+      this.formerr=true;
+    }
+    else{
+      this.formerr=false;
+    }
+    if(this.curr === 'dollar')
+      {
+          this.disp = this.dollorTOtez(amount)+" tez";
+          // this.disp = 1*amount;
+      }
+    else if(this.curr === 'rupee')
+      {
+          this.disp = this.inrTOtez(amount)+" tez";
+          // this.disp = 2*amount;
+          console.log(this.disp);
+      }
+      this.cds.detectChanges();
+  }
+
+  change(amount:number,event:string){
+    if(amount == 0){
+      this.formerr=true;
+    }
+    else{
+      this.formerr=false;
+    }
+    if(event === 'dollar')
+      {
+          this.disp = this.dollorTOtez(amount) + " tez";
+          // this.disp = 1*amount;
+      }
+    else if(event === 'rupee')
+      {
+          this.disp = this.inrTOtez(amount) + " tez";
+          // this.disp = 2*amount;
+          console.log(this.disp);
+      }
+      this.cds.detectChanges();
   }
 }

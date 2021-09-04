@@ -12,7 +12,7 @@ import { Base64 } from 'js-base64';
 export class TaquitoService {
     private taquito: TezosToolkit = new TezosToolkit('https://florencenet.smartpy.io/');
     private wallet;
-    private contract_address = "KT19aanWDjGC2SzYCke8WTYrVLF3u17ZqM7m";
+    private contract_address = "KT1JzhA4LJixF9FaJvEQM22vXDYkq5TLRz6a";
     private storage = undefined;
     private contract = undefined;
     constructor() {}
@@ -181,6 +181,18 @@ export class TaquitoService {
         // console.log(this.storage.transactions);
         return this.storage.total_fund;
     }
+
+    public async get_specific_locked_fund(puid):Promise<number>{
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        // console.log(this.storage.transactions);
+        return this.storage.posts.get(puid).locked_fund;
+    }
+
+    public async get_total_locked_fund():Promise<number>{
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        // console.log(this.storage.transactions);
+        return this.storage.locked_funds;
+    }
     // get total donors
     public async get_total_donors():Promise<number>{
         if(this.storage == undefined)this.storage = await this.contract.storage();
@@ -265,24 +277,24 @@ export class TaquitoService {
         if(this.storage == undefined)this.storage = await this.contract.storage();
         const len = this.storage.transactions.get(to_puid).length + 1;
         const trans_id = to_puid + parseInt(len);
-        try{
-            const op = await this.taquito.wallet
-            .transfer({to: this.storage.posts.get(to_puid).address , amount : send_amount ,mutez: true})
-            .send();
-            await op.confirmation();
-        }
-        catch(err)
-        {
-            flag = false;
-            console.log(err);
-        }
-        if(flag)
-        {
+        // try{
+        //     const op = await this.taquito.wallet
+        //     .transfer({to: this.storage.posts.get(to_puid).address , amount : send_amount ,mutez: true})
+        //     .send();
+        //     await op.confirmation();
+        // }
+        // catch(err)
+        // {
+        //     flag = false;
+        //     console.log(err);
+        // }
+        // if(flag)
+        // {
             const op2 = await this.contract.methods
             .add_transaction1(send_amount,comment,userAddress,from_uuid,to_puid,trans_id)
-            .send();
+            .send({amount :send_amount,mutez : true});
             await op2.confirmation();
-        }
+        // }
     }
 
     public async send_fund_to_contract(from_uuid, to_puid,send_amount,comment, downvotes) {
@@ -348,7 +360,6 @@ export class TaquitoService {
             .send();
             await op.confirmation();
         } 
-
     }
     public async report(uuid,puid){
         const flag = await this.check_support(uuid,puid);

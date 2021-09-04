@@ -29,6 +29,7 @@ interface OrganizationInfo{
 })
 export class ViewpostComponent implements OnInit{
   formerr: boolean = false;
+  lockedfunds: number;
   constructor(
     private cds: ChangeDetectorRef,
     private clipboardApi: ClipboardService,
@@ -46,7 +47,6 @@ export class ViewpostComponent implements OnInit{
   Name: String;
   Goal: number = 0;
   reached: number = 0;
-  remaining: number = 0;
   Wallet:boolean;
   OrgInfo: OrganizationInfo[] = [];
   @Output() puid:String;
@@ -75,7 +75,7 @@ export class ViewpostComponent implements OnInit{
     });
     const routeparams = this.route.snapshot.paramMap;
     this.puid = <String>routeparams.get('id');
-    this.remaining = this.Goal - this.reached;
+    this.lockedfunds = 1111;//Change locked funds here
     await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
     this.cds.detectChanges();
@@ -129,8 +129,8 @@ export class ViewpostComponent implements OnInit{
   async getOrganizationDetails(puid)
   {
     await this.taqutio.set_contract();
-    var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description'];
-    var Data = ['-', '-', '-', '-', '-'];
+    var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description', 'Deadline'];
+    var Data = ['-', '-', '-', '-', '-','-'];
 
     const post:any = await this.taqutio.get_post(puid);
     Data[0] = post.name;
@@ -138,12 +138,13 @@ export class ViewpostComponent implements OnInit{
     Data[2] = post.institution;
     Data[3] = post.goal+" tez";
     Data[4] = post.description;
+    Data[5] = 'deadline';//add deadline here
     this.Name = Data[0];
     this.puid = puid;
     this.data = post.address;
     this.Goal = post.goal;
     this.reached = post.received_mutez;
-    this.remaining = post.goal - post.received_mutez;
+    this.lockedfunds = 111;//change locked funds here
 
     for(let i=0; i<titles.length; i++)
     {
