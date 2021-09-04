@@ -42,6 +42,7 @@ export class TaquitoService {
         for(let i = 0;i<pics.length;i++)
         {
             pics[i] = "https://ipfs.io/ipfs/" + pics[i];
+            console.log(pics[i]);
         }
         return pics;
     }
@@ -149,6 +150,25 @@ export class TaquitoService {
         if(this.storage == undefined)this.storage = await this.contract.storage();
         // console.log(this.storage.posts.get(puid));
         return this.storage.posts.get(puid);
+    }
+
+    public async get_specific_post_type(type):Promise<Array<object>>{
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        var plist = [];
+        this.storage.posts.forEach((val: any, key: string) => {
+            if(val.post_type == type)
+            {
+                plist.push({
+                    name : val.name,
+                    id : key,
+                    description : val.description,
+                    progress : Math.floor((val.received_mutez.c/val.goal.c)*100),
+                    pic :"https://ipfs.io/ipfs/" + val.pictures[0],
+                    goal : val.goal
+                });
+            }
+        });
+        return plist;
     }
 
     // get total fund

@@ -1,50 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import {TaquitoService} from '../../taquito.service'
+import { Router } from '@angular/router';
 
 class Organization{
   name : string;
   id: string;
   description : string;
   progress : Number;
+  pic: string;
+  goal : number;
 }
 
 @Component({
   selector: 'ngx-education',
   templateUrl: './education.component.html',
-  styleUrls: ['./education.component.scss']
+  styleUrls: ['./education.component.scss'],
 })
 export class EducationComponent implements OnInit {
-  orgs : Organization[] = [
-    {
-      name : "Organization 1",
-      id : "1101",
-      description : "Please Donate for the country",
-      progress : 10
-    },
-    {
-      name : "Organization 2",
-      id : "1101",
-      description : "Please Donate for the country. Please Donate for the country.Please Donate for the country.Please Donate for the country.Please Donate for the country.",
-      progress : 75
-    },
-    {
-      name : "Organization 3",
-      id : "1101",
-      description : "Please Donate for the country",
-      progress : 35
-    },
-    {
-      name : "Organization 4",
-      id : "1101",
-      description : "Please Donate for the country",
-      progress : 35
-    }
-  ];
-  constructor() { }
+  orgs : Organization[] = [];
+  constructor(private taquito : TaquitoService,private router : Router) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.taquito.set_contract();
+    const post_list = await this.taquito.get_specific_post_type("Education");
+    this.orgs = post_list as Organization[];
   }
-
-  donate(){
-
+  vieworg(puid)
+  {
+    this.router.navigate(['/pages/viewpost/'+puid]);
   }
 }

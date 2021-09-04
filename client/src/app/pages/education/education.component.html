@@ -11,13 +11,14 @@
     <div class="row">
         <div class="col-sm" *ngFor="let org of orgs">
             <div class="card text-center">
-                <img class="card-img-top" width="350" height="200" src="assets/images/camera1.jpg" alt="Card image cap">
+                <img class="card-img-top" width="350" height="200" src={{org.pic}}  alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title">{{org.name}} - {{org.id}}</h5>
+                    <h5 class="card-title">{{org.name}}</h5>
+                    <p class="goal">Goal : {{org.goal}} XTz</p>
                     <nb-progress-bar [value]="org.progress" status="success" size="medium" [displayValue]="true"></nb-progress-bar>
                     <p class="card-text">{{org.description}}</p>
 
-                    <button class="button" (click)="donate()" nbButton status="primary">Know More</button>
+                    <button class="button" (click)="vieworg(org.id)" nbButton status="primary">Know More</button>
                 </div>
             </div>
         </div>
