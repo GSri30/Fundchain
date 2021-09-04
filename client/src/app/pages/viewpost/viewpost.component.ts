@@ -55,6 +55,8 @@ export class ViewpostComponent implements OnInit{
   curr: string = "rupee";
   con: any = 0;
   disp: any = 0;
+  isVoted: boolean = false;
+  VoteConfirmation: boolean = false;
 
   async ngOnInit(): Promise<void> {
     //! Need to uncomment at the end!!
@@ -161,12 +163,26 @@ export class ViewpostComponent implements OnInit{
   async upvote()
   {
     await this.taqutio.set_contract();
-    await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+    this.isVoted = await this.taqutio.check_support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+    this.cds.detectChanges();
+    if(this.isVoted == false)
+    {
+      await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+      this.VoteConfirmation = true;
+      this.cds.detectChanges();
+    }    
   }
   async downvote()
   {
     await this.taqutio.set_contract();
-    await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+    this.isVoted = await this.taqutio.check_support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+    this.cds.detectChanges();
+    if(this.isVoted == false)
+    {
+      await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
+      this.VoteConfirmation = true;
+      this.cds.detectChanges();
+    }
   }
 
   fund(amount: number, comment: string)

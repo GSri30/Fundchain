@@ -31,10 +31,19 @@
                     <h5>Vote this Organization</h5>
                </nb-card-header>
                <nb-card-body>
-                    <div class = "vote-class">
+                    <div class = "vote-class" *ngIf=Wallet>
+                         <div *ngIf = "isVoted" style="color: red; font-size: small; margin: 10px;">
+                              <p>*You have already voted</p>
+                         </div>
                          <button nbButton outline status="success" (click)="upvote()" class = "vote"><nb-icon icon="arrow-circle-up"></nb-icon> Up Vote </button>
                          <button nbButton outline status="danger" (click)="downvote()" class = "vote"><nb-icon icon="arrow-circle-down"></nb-icon> Down Vote</button>
+                         <div *ngIf = "VoteConfirmation" style="color: green; font-size: small; margin: 10px">
+                              <p>*You have voted successfully</p>
+                         </div>
                     </div>
+			<div *ngIf=!Wallet>
+				<p>Connect your wallet to vote this organization!</p>
+			</div>
                </nb-card-body>
           </nb-card>
           <nb-card>
