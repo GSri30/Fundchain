@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/mixins/breakpoints';
 @import '~@nebular/theme/styles/global/breakpoints';
 @import '../../styles/themes';
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
 @include nb-install-component() {
   display: flex;
