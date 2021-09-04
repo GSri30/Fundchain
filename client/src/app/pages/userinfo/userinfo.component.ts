@@ -60,9 +60,9 @@ export class UserinfoComponent implements OnInit, OnDestroy {
   userPictureOnly: boolean = false;
   user: any;
   private destroy$: Subject<void> = new Subject<void>();
-  Name: String;
-  Email: String = "test@email.com";
-  UUID: String = "10";
+  Name: String = sessionStorage.getItem('name');
+  Email: String = sessionStorage.getItem('email');
+  UUID: String = btoa(sessionStorage.getItem('email'));
   Wallet: Boolean = false;
   themes = [
     {
@@ -115,13 +115,15 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     this.currentTheme = this.themeService.currentTheme;
 
     await this.taquito.set_contract();
+
     this.update_out_transactions();
     this.update_in_transactions();
   }
 
   async update_out_transactions()
   {
-    var transaction_list = await this.taquito.get_specific_from_transactions("hash(email2)");
+    const uuid = btoa(sessionStorage.getItem('email'))
+    var transaction_list = await this.taquito.get_specific_from_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[0].children = a;
     var amount = 0,i = 0;
@@ -137,7 +139,8 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async update_in_transactions()
   {
-    var transaction_list = await this.taquito.get_specific_to_transactions("hash2(email)");
+    const uuid = btoa(sessionStorage.getItem('email'))
+    var transaction_list = await this.taquito.get_specific_to_transactions(uuid);
     var a = transaction_list as TreeNode<FSEntry>[];
     this.data[1].children = a;
     var amount = 0,i = 0;

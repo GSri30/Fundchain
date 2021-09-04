@@ -18,8 +18,11 @@ export class TaquitoService {
     constructor() {}
     
     public async set_contract() {
-        this.contract = await this.taquito.wallet.at(this.contract_address);
-        this.storage = await this.contract.storage();
+        // if(this.storage == undefined) 
+        // {
+            this.contract = await this.taquito.wallet.at(this.contract_address);
+            this.storage = await this.contract.storage();
+        // }
     }
 
     public async connect_wallet() {
@@ -191,8 +194,8 @@ export class TaquitoService {
     
     async check_new_user(email):Promise<Boolean>{
         if(this.storage == undefined)this.storage = await this.contract.storage();
-        if(this.storage.users.get(btoa(email))) return true;
-        else return false;
+        if(this.storage.users.get(btoa(email))) return false;
+        else return true;
     }
 
     public async send_fund(from_uuid, to_puid,send_amount,comment) {
@@ -218,16 +221,21 @@ export class TaquitoService {
 
     public async add_new_user(email) {
         const op = await this.contract.methods
-        .add_user(email,"hash(" +(email) + ")")
+        .add_user(email,btoa(email))
         .send();
         await op.confirmation();
     }
 
-    public async add_new_post(name,description,institution,post_type,user_uuid,puid,goal) {
+    public async add_new_post(name,description,institution,post_type,uuid,goal) {
         const userAddress = await this.wallet.getPKH();
-        console.log(userAddress,description,goal,institution,name,post_type,puid,user_uuid);
+        if(this.storage == undefined) this.storage = this.contract.storage();
+        const len = await this.storage.users.get(uuid).posts.length;
+        const posts = await this.storage.users.get(uuid);
+        var email = atob(uuid);
+        console.log(len,posts);
+        const puid = btoa(email + len.toString());
         const op = await this.contract.methods
-        .add_post(userAddress,description,goal,institution,name,post_type,puid,user_uuid)
+        .add_post(userAddress,description,goal,institution,name,post_type,puid,uuid)
         .send();
         await op.confirmation();
     }
