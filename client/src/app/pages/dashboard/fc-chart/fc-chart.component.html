@@ -1,6 +1,6 @@
 <nb-card size="large">
      <nb-tabset fullWidth (changeTab)="changeTab($event)">
-       <nb-tab tabTitle="Orders">
+       <nb-tab tabTitle="Funds Raised">
          <div class="chart-container">
            <ngx-fc-chart-summary [summary]="chartPanelSummary"></ngx-fc-chart-summary>
            <!-- <ngx-chart-panel-header [type]="period"
@@ -9,7 +9,7 @@
            <ngx-order-chart #ordersChart [ordersChartData]="ordersChartData"></ngx-order-chart>
          </div>
        </nb-tab>
-       <nb-tab tabTitle="Funds Raised" [lazyLoad]="true">
+       <nb-tab tabTitle="Hall Of Fame" [lazyLoad]="true">
          <div class="chart-container">
            <ngx-fc-chart-summary [summary]="chartPanelSummary"></ngx-fc-chart-summary>
            <!-- <ngx-chart-panel-header [type]="period"
@@ -20,4 +20,3 @@
        </nb-tab>
      </nb-tabset>
    </nb-card>
-   

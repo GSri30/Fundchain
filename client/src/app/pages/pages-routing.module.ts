@@ -30,7 +30,7 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
-      path:'userinfo',
+      path:'user-profile',
       component: UserinfoComponent,
     },
     {
@@ -38,7 +38,7 @@ const routes: Routes = [{
       component: ViewpostComponent,
     },
     {
-      path:'addorg',
+      path:'raise-fund',
       component: AddorgComponent,
     },
     {

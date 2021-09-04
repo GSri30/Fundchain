@@ -2,6 +2,7 @@ import { OrdersChartData } from './../fc-chart.service';
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { delay, takeWhile } from 'rxjs/operators';
+import { TaquitoService } from '../../../../taquito.service';
 
 import { LayoutService } from '../../../../@core/utils/layout.service';
 
@@ -28,14 +29,15 @@ export class OrderChartComponent implements AfterViewInit, OnDestroy, OnChanges 
   echartsIntance: any;
   option: any;
 
-  ngOnChanges(): void {
+  async ngOnChanges(): Promise<void> {
     if (this.option) {
-      this.updateOrdersChartOptions(this.ordersChartData);
+      await this.updateOrdersChartOptions(this.ordersChartData);
     }
   }
 
   constructor(private theme: NbThemeService,
-              private layoutService: LayoutService) {
+              private layoutService: LayoutService,
+              private taquito : TaquitoService) {
     this.layoutService.onSafeChangeLayoutSize()
       .pipe(
         takeWhile(() => this.alive),
@@ -43,8 +45,8 @@ export class OrderChartComponent implements AfterViewInit, OnDestroy, OnChanges 
       .subscribe(() => this.resizeChart());
   }
 
-  ngAfterViewInit(): void {
-    this.theme.getJsTheme()
+  async ngAfterViewInit(): Promise<void> {
+    await this.theme.getJsTheme()
       .pipe(
         takeWhile(() => this.alive),
         delay(1),
@@ -261,9 +263,9 @@ export class OrderChartComponent implements AfterViewInit, OnDestroy, OnChanges 
     };
   }
 
-  updateOrdersChartOptions(ordersChartData: OrdersChartData) {
+  async updateOrdersChartOptions(ordersChartData: OrdersChartData) {
     const options = this.option;
-    const series = this.getNewSeries(options.series, ordersChartData.Data);
+    const series = await this.getNewSeries(options.series, ordersChartData.Data);
     const xAxis = this.getNewXAxis(options.xAxis, ordersChartData.labels);
 
     this.option = {
@@ -273,19 +275,37 @@ export class OrderChartComponent implements AfterViewInit, OnDestroy, OnChanges 
     };
   }
 
-  getNewSeries(series, linesData: number[][]) {
+  async getNewSeries(series, linesData: number[][]) {
+    await this.taquito.set_contract();
+    const list = await this.taquito.graph();
+    // console.log(list);
+    var fund_list = [];
+    fund_list.push(list);
     return series.map((line, index) => {
       return {
         ...line,
-        data: linesData[index],
+        data: fund_list[index],
       };
     });
   }
 
   getNewXAxis(xAxis, chartLabel: string[]) {
+    var date = new Date();
+    var month = date.getMonth();
+    var month_map = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var label = [];
+    for(let i=11; i>=0; i--)
+    {
+        var date2 = new Date();
+        date2.setMonth(month - i);
+        var monthYear = "";
+        monthYear += month_map[date2.getMonth()];
+        monthYear += " " + date2.getFullYear();
+        label.push(monthYear);   
+    }
     return {
       ...xAxis,
-      data: chartLabel,
+      data: label,
     };
   }
 

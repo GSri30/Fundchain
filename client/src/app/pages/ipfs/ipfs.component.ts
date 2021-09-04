@@ -33,12 +33,12 @@ export class IpfsComponent {
 
   xtz:any;
   constructor() {
-    fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
-    .then(data=>{
-      this.xtz=(data["rates"].XTZ);
-      console.log(this.dollorTOtez(1));
-      console.log(this.inrTOtez(1));
-    });
+    // fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
+    // .then(data=>{
+    //   this.xtz=(data["rates"].XTZ);
+    //   console.log(this.dollorTOtez(1));
+    //   console.log(this.inrTOtez(1));
+    // });
   }
 
   dollorTOtez(dollors){

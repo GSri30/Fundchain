@@ -31,25 +31,25 @@ export class DashboardComponent implements OnDestroy {
 
   solarValue: number;
   FundsReceivedCard: CardSettings = {
-    title: 'Funds Received',
+    title: 'Total Funds Raised',
     iconClass: 'nb-lightbulb',
     type: 'primary',
     count: 0,
   };
   ContributorsCard: CardSettings = {
-    title: 'Contributors',
+    title: 'Total Funders',
     iconClass: 'nb-plus-circled',
     type: 'info',
     count: 0,
   };
   GoalsReachedCard: CardSettings = {
-    title: 'Goals Reached',
+    title: 'Total Goals Reached',
     iconClass: 'nb-checkmark-circle',
     type: 'success',
     count: 0,
   };
   RecipientsCard: CardSettings = {
-    title: 'Recipients',
+    title: 'Total Beneficiaries',
     iconClass: 'nb-person',
     type: 'warning',
     count: 0,
@@ -105,8 +105,8 @@ export class DashboardComponent implements OnDestroy {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
 
-    
-    
+
+
 
     this.solarService.getSolarData()
       .pipe(takeWhile(() => this.alive))
@@ -136,6 +136,6 @@ export class DashboardComponent implements OnDestroy {
 
   openorg(org : any){
     console.log(org);
-    this.router.navigate(['/pages/viewpost/'+org.puid]);
+    this.router.navigate(['/main/viewpost/'+org.puid]);
   }
 }

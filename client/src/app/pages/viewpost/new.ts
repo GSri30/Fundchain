@@ -1,4 +1,3 @@
-import { UserinfoService } from './../userinfo/userinfo.service';
 import { ConditionalFundDialogComponent } from './conditional-fund-dialog/conditional-fund-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
@@ -28,15 +27,13 @@ interface OrganizationInfo{
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewpostComponent implements OnInit, OnChanges{
-  formerr: boolean = false;
   constructor(
     private cds: ChangeDetectorRef,
     private clipboardApi: ClipboardService,
     private dialogService: NbDialogService,
     private route: ActivatedRoute,
     private taqutio : TaquitoService,
-    private qr:QrcodeComponent,
-    private userinfo:UserinfoService
+    private qr:QrcodeComponent
   ) { }
 
   // content: string = "abcdefghijklmnopqrstuvwxyz";
@@ -47,7 +44,9 @@ export class ViewpostComponent implements OnInit, OnChanges{
   Goal: number = 0;
   reached: number = 0;
   remaining: number = 0;
-  Wallet:boolean;
+
+  support:boolean = false;
+
   OrgInfo: OrganizationInfo[] = [];
   @Output() puid:String;
 
@@ -79,10 +78,6 @@ export class ViewpostComponent implements OnInit, OnChanges{
     //   this.xtz=(data["rates"].XTZ);
     //   this.disp = this.inrTOtez(this.con);
     // });
-    this.userinfo.Wallet.subscribe((status) => {
-      this.Wallet = status;
-      this.cds.detectChanges();
-    });
     const routeparams = this.route.snapshot.paramMap;
     this.puid = <String>routeparams.get('id');
     this.remaining = this.Goal - this.reached;
@@ -183,13 +178,6 @@ export class ViewpostComponent implements OnInit, OnChanges{
 
   fund(amount: number, comment: string)
   {
-    if(amount==0){
-      this.formerr=true;
-      return 0;
-    }
-    if(!this.Wallet){
-      return 0;
-    }
     this.dialogService.open(ConfirmationDialogComponent, {
         context:{
           puid: this.puid as string,
@@ -202,13 +190,6 @@ export class ViewpostComponent implements OnInit, OnChanges{
 
   conditional(amount: number, comment: string)
   {
-    if(amount==0){
-      this.formerr=true;
-      return 0;
-    }
-    if(!this.Wallet){
-      return 0;
-    }
       this.dialogService.open(ConditionalFundDialogComponent, {
         context:{
           puid: this.puid as string,
@@ -216,14 +197,5 @@ export class ViewpostComponent implements OnInit, OnChanges{
           comment: comment,
         }
       })
-  }
-
-  checkinp(amount:number){
-    if(amount == 0){
-      this.formerr=true;
-    }
-    else{
-      this.formerr=false;
-    }
   }
 }

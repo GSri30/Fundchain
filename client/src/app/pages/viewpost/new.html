@@ -31,7 +31,7 @@
                     <h5>Vote this Organization</h5>
                </nb-card-header>
                <nb-card-body>
-                    <div class = "vote-class">
+                    <div support class = "vote-class">
                          <button nbButton outline status="success" (click)="upvote()" class = "vote"><nb-icon icon="arrow-circle-up"></nb-icon> Up Vote </button>
                          <button nbButton outline status="danger" (click)="downvote()" class = "vote"><nb-icon icon="arrow-circle-down"></nb-icon> Down Vote</button>
                     </div>
@@ -85,7 +85,7 @@
                <nb-card-body>
                     <div class = "donate">
                          <div>
-                              <input type="number" (change)=checkinp(amount.value) nbInput value = {{con}} fullWidth #amount fieldSize = "large" placeholder="Amount of money you want to donate">
+                              <input type="number" nbInput value = {{con}} fullWidth #amount fieldSize = "large" placeholder="Amount of money you want to donate">
                          </div>
                          <div class = "converter">
                               <nb-select placeholder="Select Showcase" [(selected)]="curr">
@@ -98,13 +98,6 @@
                     </div>
                     <div class = "donate">
                          <input type="text" nbInput #comment fullWidth fieldSize = "large" placeholder="Your Comments">
-                    </div>
-                    <br>
-                    <div *ngIf="!Wallet">
-                         <p style="color: red;"> Please connect your Wallet to Fund!</p>
-                    </div>
-                     <div *ngIf="formerr">
-                         <p style="color: red;"> Please give a valid amount!</p>
                     </div>
                     <div class = "donate-button">
                          <button nbButton status="success" (click) = "fund(amount.value, comment.value)">Fund</button>

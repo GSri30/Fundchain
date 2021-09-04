@@ -35,7 +35,7 @@ export default function FluidMeter() {
   };
 
   var backgroundFluidLayer = {
-    fillStyle: "pink",
+    fillStyle: "#2ec916",
     angle: 0,
     horizontalPosition: 0,
     angularSpeed: 140,

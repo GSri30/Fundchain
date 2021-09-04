@@ -12,7 +12,7 @@ import { Base64 } from 'js-base64';
 export class TaquitoService {
     private taquito: TezosToolkit = new TezosToolkit('https://florencenet.smartpy.io/');
     private wallet;
-    private contract_address = "KT1NeHakUJ3uYAfwGMQ5pJf3tNzd8Czy75Ys";
+    private contract_address = "KT1JYBYX7M3CJXm9K7n8z1DKmDqPyxCobhv7";
     private storage = undefined;
     private contract = undefined;
     constructor() {}
@@ -105,38 +105,40 @@ export class TaquitoService {
         return transactions_list;
     }
 
+
     public async graph()
     {
-        var month_list:any = {
-            1 : 0,
-            2 : 0,
-            3 : 0,
-            4 : 0,
-            5 : 0,
-            6 : 0,
-            7 : 0,
-            8 : 0,
-            9 : 0,
-            10 : 0,
-            11 : 0,
-            12 : 0
-        };
-        // var curr_date = new Date();
-        // const curr_month = curr_date.getMonth() + 1;      
+        var month_list:any = [0,0,0,0,0,0,0,0,0,0,0,0];
+        var curr_date = new Date();
+        const curr_month = curr_date.getMonth() + 1;    
+        const curr_year = curr_date.getFullYear();
         
-        // if(this.storage == undefined)this.storage = await this.contract.storage();
-        // this.storage.transactions.forEach((val: any, key: string) => {
-        //     val.forEach(element => {
-                
-        //         const trans_month = parseInt(element.timestamp.substring(5,7));
-        //         console.log(trans_month);
-        //         if(curr_month >= trans_month && curr_month == trans_month)
-        //         else
-        //     });
-        // });
-        // month_list.forEach((val : Number , key : Number) => {
-            
-        // });
+        
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        this.storage.transactions.forEach((val: any, key: string) => {
+            val.forEach(element => {
+                const trans_month = parseInt(element.timestamp.substring(5,7));
+                const trans_year = parseInt(element.timestamp.substring(0,5));
+
+                if(curr_month > trans_month && curr_year == trans_year)
+                {
+                    month_list[trans_month-1 +12-curr_month] += element.amount.c[0];
+                }
+                else if(curr_month == trans_month && curr_year == trans_year)
+                {
+                    month_list[11] += element.amount.c[0];
+                }
+                else if(curr_month < trans_month && curr_year == trans_year + 1)
+                {
+                    month_list[trans_month-1 -12 + curr_month] += element.amount.c[0];
+                }
+            });
+        });
+        for(let i = 0;i<12;i++)
+        {
+            month_list[i] = month_list[i]/2;
+        }
+        return month_list;
     }
 
     //get user
@@ -202,8 +204,6 @@ export class TaquitoService {
         // console.log(this.storage.posts.size);
         return this.storage.posts.size;
     }
-    //get fundings each month
-    
     //get weekly fundings
 
     //set vote
@@ -211,12 +211,8 @@ export class TaquitoService {
     //Send anyway (transaction)
 
     //XP for each user.
-    
-    //deadline
 
     //set verifaction.
-
-    //Set images for posts.
 
     public async get_posts_of_user(uuid):Promise<Array<object>> {
         if(this.storage == undefined)this.storage = await this.contract.storage();
@@ -265,21 +261,40 @@ export class TaquitoService {
         const userAddress = await this.wallet.getPKH();
         let flag = true
         if(this.storage == undefined)this.storage = await this.contract.storage();
+        const len = this.storage.transactions.get(to_puid).length + 1;
+        const trans_id = to_puid + parseInt(len);
         try{
-            console.log(this.storage.posts.get(to_puid).address)
-            await this.taquito.wallet.transfer({to : this.storage.posts.get(to_puid).address , amount : send_amount})
-        }
-        catch(err){
-            flag = false;
-            console.error(err);
-        }
-        if(flag)
-        {
-            const op = await this.contract.methods
-            .add_transaction(send_amount,comment,userAddress,from_uuid,to_puid)
+            const op = await this.taquito.wallet
+            .transfer({to: this.storage.posts.get(to_puid).address , amount : send_amount ,mutez: true})
             .send();
             await op.confirmation();
         }
+        catch(err)
+        {
+            flag = false;
+            console.log(err);
+        }
+        if(flag)
+        {
+            const op2 = await this.contract.methods
+            .add_transaction1(send_amount,comment,userAddress,from_uuid,to_puid,trans_id)
+            .send();
+            await op2.confirmation();
+        }
+    }
+
+    public async send_fund_to_contract(from_uuid, to_puid,send_amount,comment, downvotes) {
+        const userAddress = await this.wallet.getPKH();
+        let flag = true
+        
+        if(this.storage == undefined)this.storage = await this.contract.storage();
+        const len = this.storage.transactions.get(to_puid).length + 1;
+        const trans_id = to_puid + parseInt(len);
+
+        const op = await this.contract.methods
+        .add_transaction2(send_amount,comment,downvotes,userAddress,from_uuid,to_puid,trans_id)
+        .send({ amount: send_amount, mutez: true});
+        await op.confirmation();
     }
 
     public async add_new_user(email) {
@@ -289,7 +304,7 @@ export class TaquitoService {
         await op.confirmation();
     }
 
-    public async add_new_post(name,description,institution,post_type,uuid,goal,images) {
+    public async add_new_post(name,description,institution,post_type,uuid,goal,images,deadline) {
         const userAddress = await this.wallet.getPKH();
         if(this.storage == undefined) this.storage = this.contract.storage();
         
@@ -298,11 +313,139 @@ export class TaquitoService {
         var email = atob(uuid);
         const puid = Base64.encode(email+ len.toString(),true);
         // console.log(typeof(images));
-        // console.log(images[0]);
+        console.log(deadline);
         const op = await this.contract.methods
-        .add_post(userAddress,description,goal,institution,name,images,post_type,puid,uuid)
+        .add_post(userAddress,deadline,description,goal,institution,name,images,post_type,puid,uuid)
         .send();
         await op.confirmation();
+    }
+
+    // Check Support
+    public async check_support(uuid,puid):Promise<boolean>
+    {
+        if(this.storage == undefined) this.storage = this.contract.storage();
+        const uplist = this.storage.posts.get(puid).upvotes
+        const downlist = this.storage.posts.get(puid).downvotes
+        for(let i = 0;i<uplist.length;i++)
+        {
+            if(uplist[i] == uuid) return true;
+        }
+        for(let i = 0;i<downlist.length;i++)
+        {
+            if(downlist[i] == uuid) return true;
+        }
+        return false;
+    }
+
+    public async support(uuid,puid){
+        const flag = await this.check_support(uuid,puid);
+        if(flag == false)
+        {
+            const op = await this.contract.methods
+            .support(puid,uuid)
+            .send();
+            await op.confirmation();
+        } 
+
+    }
+    public async report(uuid,puid){
+        const flag = await this.check_support(uuid,puid);
+        if(flag == false)
+        {
+            const op = this.contract.methods
+            .report(puid,uuid)
+            .send();
+            await op.confirmation();
+        } 
+    }
+    
+    // Check Reclaim
+    // 0 : This fund can be reclaimed.    
+    // 1 : This fund is not mature. Please wait until the deadline of the cause!
+    // 2 : This fund was already sent to the organization.
+    // 3 : Transaction not found.
+    public async check_reclaim(uuid,transid):Promise<number>
+    {
+        const posts = await this.storage.posts;
+        var curr_date = new Date();
+        if(this.storage == undefined) this.storage = this.contract.storage();        
+        await this.storage.transactions.get(uuid).forEach((val: any, key: string) => {
+            if(val.transid == transid)
+            {
+                if(val.type == 1) return 2;
+                else{
+                    if(posts[val.to_puid].deadline <=  curr_date)
+                    {
+                        if(posts[val.to_puid].downvotes.length >= val.downvotes)
+                        {
+                            return 0;
+                        }
+                        else return 2;
+                    }
+                    else if(posts[val.to_puid].downvotes.length >= val.downvotes)
+                    {
+                        return 0;
+                    }
+                    return 1;
+                }
+            }
+        });
+        return 3;
+    }
+    
+    // Check Claim
+    // 0 : This fund can be claimed.    
+    // 1 : This fund is not mature. Please wait until the deadline of the cause!
+    // 2 : This fund cannot be claimed as the donor set a low downvote threshold.
+    // 3 : Transaction not found.
+    public async check_claim(puid,transid):Promise<number>
+    {
+        const posts = await this.storage.posts;
+        var curr_date = new Date();
+        if(this.storage == undefined) this.storage = this.contract.storage();        
+        await this.storage.transactions.get(puid).forEach((val: any, key: string) => {
+            if(val.transid == transid)
+            {
+                if(val.type == 1) return 2;
+                else{
+                    if(posts[val.to_puid].deadline < curr_date)
+                    {
+                        if(posts[val.to_puid].downvotes.length < val.downvotes)
+                        {
+                            return 0;
+                        }
+                        else return 2;
+                    }
+                    else if(posts[val.to_puid].downvotes.length >= val.downvotes)
+                    {
+                        return 2;
+                    }
+                    else return 1;
+                }
+            }
+        });
+        return 3;
+    }
+
+    public async reclaim_fund(puid,transid,uuid){
+        const userAddress = await this.wallet.getPKH();
+        const flag = await this.check_claim(puid,transid);
+        if(flag == 0){
+            const op = await this.contract.methods
+            .reclaim_fund(userAddress,puid,transid,uuid)
+            .send();
+            await op.confirmation();
+        }
+    }
+
+    public async claim_fund(puid,uuid,transid){
+        const flag = await this.check_claim(uuid,transid);
+        if(flag == 0){
+            const op = await this.contract.methods
+            .claim_fund(puid,transid,uuid)
+            .send();
+            await op.confirmation();
+        }
     }
 
     public async is_connected():Promise<boolean>

@@ -4,11 +4,16 @@ import { Subject } from 'rxjs';
 import { NbComponentSize, NbMediaBreakpointsService, NbThemeService } from '@nebular/theme';
 import { Camera, SecurityCamerasData } from '../../../@core/data/security-cameras';
 import { TaquitoService } from '../../../taquito.service';
+import{
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 
 @Component({
   selector: 'ngx-orgpics',
   templateUrl: './orgpics.component.html',
-  styleUrls: ['./orgpics.component.scss']
+  styleUrls: ['./orgpics.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrgpicsComponent implements OnInit, OnDestroy {
   
@@ -24,7 +29,8 @@ export class OrgpicsComponent implements OnInit, OnDestroy {
     private themeService: NbThemeService,
     private breakpointService: NbMediaBreakpointsService,
     private securityCamerasService: SecurityCamerasData,
-    private taquito : TaquitoService
+    private taquito : TaquitoService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -53,6 +59,7 @@ export class OrgpicsComponent implements OnInit, OnDestroy {
       .subscribe((width: number) => {
         this.actionSize = width > breakpoints.md ? 'medium' : 'small';
       });
+      this.cdr.detectChanges();
   }
 
   ngOnDestroy() {

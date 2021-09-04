@@ -9,12 +9,12 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-sm" *ngFor="let org of orgs">
+        <div class="col-sm-4" *ngFor="let org of orgs">
             <div class="card text-center">
-                <img class="card-img-top" width="350" height="200" src={{org.pic}}  alt="Card image cap">
+                <img class="card-img-top" width="350" height="200" src={{org.pic}} alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title">{{org.name}}</h5>
-                    <p class="goal">Goal : {{org.goal}} XTz</p>
+                    <p class="goal">Goal : {{org.goal}} tez</p>
                     <nb-progress-bar [value]="org.progress" status="success" size="medium" [displayValue]="true"></nb-progress-bar>
                     <p class="card-text">{{org.description}}</p>
 
@@ -22,5 +22,7 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>

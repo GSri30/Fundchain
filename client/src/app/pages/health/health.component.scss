@@ -16,7 +16,11 @@
 
 .card-text {
     margin-top: 2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
-.goal{
+
+.goal {
     text-align: right;
 }

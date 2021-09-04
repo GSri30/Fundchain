@@ -4,6 +4,7 @@ class FundChain(sp.Contract):
     def __init__(self):
         self.init(
         users = sp.map(
+                            #uuid
                             tkey=sp.TString,
                             tvalue=sp.TRecord(
                                     uuid=sp.TString,
@@ -15,6 +16,7 @@ class FundChain(sp.Contract):
                                 )
                             ),
         transactions=sp.map(
+                                #uuid or puid
                                 tkey=sp.TString,
                                 tvalue=sp.TList(
                                     sp.TRecord(
@@ -110,6 +112,7 @@ class FundChain(sp.Contract):
         sp.verify(self.data.users.contains(params.from_uuid) == True)
         sp.verify(self.data.posts.contains(params.to_puid) == True)
         sp.verify(self.data.posts[params.to_puid].goal_reached == False)
+        sp.verify(self.data.posts.[params.to_puid].owner_uuid != params.from_uuid)
         self.data.transactions[params.from_uuid].push(sp.record(
             from_uuid=params.from_uuid,
             from_address=params.from_address,

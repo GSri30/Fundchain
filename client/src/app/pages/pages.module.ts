@@ -29,6 +29,7 @@ import { LoginComponent } from '../login/login.component';
 import { FluidMeterComponent } from './viewpost/fluid-meter/fluid-meter.component';
 import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/confirmation-dialog.component';
 import { ConditionalFundDialogComponent } from './viewpost/conditional-fund-dialog/conditional-fund-dialog.component';
+import { UserinfoService } from './userinfo/userinfo.service';
 
 
 
@@ -71,7 +72,8 @@ import { ConditionalFundDialogComponent } from './viewpost/conditional-fund-dial
     ConditionalFundDialogComponent,
   ],
   providers: [
-    LoginComponent
+    LoginComponent,
+    UserinfoService
   ]
 })
 export class PagesModule {
