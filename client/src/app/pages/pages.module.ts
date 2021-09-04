@@ -1,3 +1,12 @@
+import { CommonModule } from '@angular/common';
+import { FarmingModule } from './farming/farming.module';
+import { NatureModule } from './nature/nature.module';
+import { OldagehomeModule } from './oldagehome/oldagehome.module';
+import { OthersModule } from './other/other.module';
+import { RuraldevModule } from './ruraldev/rural.module';
+import { HealthModule } from './health/health.module';
+import { HealthComponent } from './health/health.component';
+import { StartupModule } from './startups/startup.module';
 import { EducationModule } from './education/education.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -19,12 +28,12 @@ import { IpfsComponent } from './ipfs/ipfs.component';
 import { LoginComponent } from '../login/login.component';
 import { FluidMeterComponent } from './viewpost/fluid-meter/fluid-meter.component';
 import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/confirmation-dialog.component';
-import { EducationComponent } from './education/education.component';
 
 
 
 @NgModule({
   imports: [
+    CommonModule,
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
@@ -39,7 +48,14 @@ import { EducationComponent } from './education/education.component';
     NgxQRCodeModule,
     NbInputModule,
     NbDialogModule.forChild(),
-    EducationModule
+    EducationModule,
+    StartupModule,
+    HealthModule,
+    RuraldevModule,
+    OthersModule,
+    OldagehomeModule,
+    NatureModule,
+    FarmingModule
   ],
   declarations: [
     PagesComponent,

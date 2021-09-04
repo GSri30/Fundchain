@@ -1,3 +1,10 @@
+import { HealthComponent } from './health/health.component';
+import { OthersComponent } from './other/other.component';
+import { FarmingComponent } from './farming/farming.component';
+import { NatureComponent } from './nature/nature.component';
+import { RuraldevComponent } from './ruraldev/rural.component';
+import { OldagehomeComponent } from './oldagehome/oldagehome.component';
+import { StartupComponent } from './startups/startup.component';
 import { EducationComponent } from './education/education.component';
 import { ViewpostComponent } from './viewpost/viewpost.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -41,6 +48,34 @@ const routes: Routes = [{
     {
       path: 'education',
       component: EducationComponent,
+    },
+    {
+      path: 'startup',
+      component: StartupComponent
+    },
+    {
+      path: 'oldagehome',
+      component: OldagehomeComponent
+    },
+    {
+      path: 'health',
+      component: HealthComponent
+    },
+    {
+      path: 'ruraldevelopment',
+      component: RuraldevComponent
+    },
+    {
+      path: 'nature',
+      component: NatureComponent
+    },
+    {
+      path: 'farming',
+      component: FarmingComponent
+    },
+    {
+      path: 'others',
+      component: OthersComponent
     },
     {
       path: '',
