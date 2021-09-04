@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrgpicsComponent } from './orgpics.component';
+import { QrcodeComponent } from './qrcode.component';
 
-describe('OrgpicsComponent', () => {
-  let component: OrgpicsComponent;
-  let fixture: ComponentFixture<OrgpicsComponent>;
+describe('QrcodeComponent', () => {
+  let component: QrcodeComponent;
+  let fixture: ComponentFixture<QrcodeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrgpicsComponent ]
+      declarations: [ QrcodeComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrgpicsComponent);
+    fixture = TestBed.createComponent(QrcodeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

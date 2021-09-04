@@ -106,7 +106,6 @@ export class DashboardComponent implements OnDestroy {
 
   constructor(private themeService: NbThemeService,
               private solarService: SolarData) {
-    btoa("g.sriharsha@gmail.com")
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(theme => {

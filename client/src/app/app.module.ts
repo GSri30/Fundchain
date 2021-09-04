@@ -12,6 +12,8 @@ import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode'
+
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -40,6 +42,7 @@ import {
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+    NgxQRCodeModule
   ],
   bootstrap: [AppComponent],
 })
