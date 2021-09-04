@@ -122,3 +122,18 @@ h1{
 .org-title{
      font-weight: bold;
 }
+
+button+button{
+     margin: 10px;
+}
+
+.vote{
+     margin: 15px;
+}
+.vote-class{
+     text-align: center;
+}
+
+nb-select+input{
+     margin: 10px;
+}

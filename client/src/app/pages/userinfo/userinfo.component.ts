@@ -43,8 +43,6 @@ interface FSEntry {
   Amount: string;
   items?: number;
   kind: string;
-  parent: string;
-
 }
 
 @Component({
@@ -98,13 +96,16 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private ad: ApplicationRef,
     private taquito: TaquitoService,
     private iconsLibrary: NbIconLibraries
-  )
+  ) 
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
   }
 
    async ngOnInit(): Promise<void> {
-    this.user={name:sessionStorage.getItem('name'),picture:`assets/images/${sessionStorage.getItem('profilepicid')}.png`};
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users: any) => (this.user = users.nick));
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService
@@ -140,12 +141,11 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     while(i<a.length)
     {
       amount += parseInt(a[i].data.Amount)
-      a[i].data.parent = "Out";
       i+=1
     }
     this.data[0].data.Amount = amount.toString();
     this.cds.detectChanges();
-    this.dataSource = this.dataSourceBuilder.create(this.data);
+    this.dataSource = this.dataSourceBuilder.create(this.data);    
   }
 
   async update_in_transactions()
@@ -158,12 +158,11 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     while(i<a.length)
     {
       amount += parseInt(a[i].data.Amount);
-      a[i].data.parent = "In";
       i+=1;
     }
-    this.data[1].data.Amount = amount.toString();
+    this.data[1].data.Amount = amount.toString();   
     this.cds.detectChanges();
-    this.dataSource = this.dataSourceBuilder.create(this.data);
+    this.dataSource = this.dataSourceBuilder.create(this.data);    
   }
 
   ngOnDestroy() {
@@ -185,11 +184,11 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   private data: TreeNode<FSEntry>[] = [
     {
-      data: { Type: "Out Transactions", Amount: "0", kind:'dir', parent:'null'},
+      data: { Type: "Out Transactions", Amount: "0", kind:'dir'},
       children: [],
     },
     {
-      data: { Type: "In Transactions", Amount: "0", kind:'dir', parent:'null' },
+      data: { Type: "In Transactions", Amount: "0", kind:'dir' },
       children: [],
     },
   ];
@@ -198,21 +197,6 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     const minWithForMultipleColumns = 400;
     const nextColumnStep = 100;
     return minWithForMultipleColumns + nextColumnStep * index;
-  }
-
-  isDir(kind,parent): boolean {
-    return !(kind === "dir");
-  }
-
-  isOut(parent) : boolean{
-    return parent === "Out";
-  }
-
-  Claim(name){
-    console.log(name);
-  }
-  Reclaim(name){
-    console.log(name);
   }
 }
 

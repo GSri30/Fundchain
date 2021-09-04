@@ -1,0 +1,12 @@
+<nb-card size = "small" class = "dialog"> 
+     <nb-card-body>
+          <div class = "dialog-body">
+               <input type = "number" nbInput fullWidth fieldSize = "large" placeholder = "Enter number of Downvotes">
+          </div>
+          
+     </nb-card-body>
+     <nb-card-footer>
+       <button nbButton hero status="danger" (click)="close()">Close</button>
+       <button nbButton hero status="success" (click)="Okay()">Donate</button>
+     </nb-card-footer>
+</nb-card>

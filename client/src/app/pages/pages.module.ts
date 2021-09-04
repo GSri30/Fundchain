@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { FarmingModule } from './farming/farming.module';
 import { NatureModule } from './nature/nature.module';
 import { OldagehomeModule } from './oldagehome/oldagehome.module';
@@ -11,7 +12,7 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { UserinfoModule } from './userinfo/userinfo.module';
 import { NgModule } from '@angular/core';
-import { NbMenuModule, NbCardModule, NbIconModule, NbButtonModule, NbInputModule, NbDialogModule } from '@nebular/theme';
+import { NbMenuModule, NbCardModule, NbIconModule, NbButtonModule, NbInputModule, NbDialogModule, NbSelectModule } from '@nebular/theme';
 
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
@@ -27,17 +28,20 @@ import { IpfsComponent } from './ipfs/ipfs.component';
 import { LoginComponent } from '../login/login.component';
 import { FluidMeterComponent } from './viewpost/fluid-meter/fluid-meter.component';
 import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/confirmation-dialog.component';
+import { ConditionalFundDialogComponent } from './viewpost/conditional-fund-dialog/conditional-fund-dialog.component';
 
 
 
 @NgModule({
   imports: [
+    CommonModule,
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
     NbCardModule,
     NbIconModule,
     NbButtonModule,
+    NbSelectModule,
     UserinfoModule,
     DashboardModule,
     MiscellaneousModule,
@@ -64,6 +68,7 @@ import { ConfirmationDialogComponent } from './viewpost/confirmation-dialog/conf
     IpfsComponent,
     FluidMeterComponent,
     ConfirmationDialogComponent,
+    ConditionalFundDialogComponent,
   ],
   providers: [
     LoginComponent

@@ -11,7 +11,6 @@ import {
   NbListModule,
   NbIconModule,
   NbStepperModule,
-  NbDatepickerModule,
 
 } from '@nebular/theme';
 import { NbInputModule, NbTreeGridModule } from '@nebular/theme';
@@ -40,8 +39,7 @@ import { FormsModule } from '@angular/forms';
     NbTreeGridModule,
     NbInputModule,
     Ng2SmartTableModule,
-    NbStepperModule,
-    NbDatepickerModule
+    NbStepperModule
   ],
   declarations: [
     AddorgComponent

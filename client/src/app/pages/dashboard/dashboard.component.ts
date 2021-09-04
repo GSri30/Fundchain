@@ -31,25 +31,25 @@ export class DashboardComponent implements OnDestroy {
 
   solarValue: number;
   FundsReceivedCard: CardSettings = {
-    title: 'Total Funds Raised',
+    title: 'Funds Received',
     iconClass: 'nb-lightbulb',
     type: 'primary',
     count: 0,
   };
   ContributorsCard: CardSettings = {
-    title: 'Total Funders',
+    title: 'Contributors',
     iconClass: 'nb-plus-circled',
     type: 'info',
     count: 0,
   };
   GoalsReachedCard: CardSettings = {
-    title: 'Total Goals Reached',
+    title: 'Goals Reached',
     iconClass: 'nb-checkmark-circle',
     type: 'success',
     count: 0,
   };
   RecipientsCard: CardSettings = {
-    title: 'Total Beneficiaries',
+    title: 'Recipients',
     iconClass: 'nb-person',
     type: 'warning',
     count: 0,
@@ -105,8 +105,8 @@ export class DashboardComponent implements OnDestroy {
         this.statusCards = this.statusCardsByThemes[theme.name];
     });
 
-
-
+    
+    
 
     this.solarService.getSolarData()
       .pipe(takeWhile(() => this.alive))

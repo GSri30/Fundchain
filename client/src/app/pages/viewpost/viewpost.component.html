@@ -27,6 +27,17 @@
 
      <div class = "col-xxxl-5 col-md-5">
           <nb-card>
+               <nb-card-header>
+                    <h5>Vote this Organization</h5>
+               </nb-card-header>
+               <nb-card-body>
+                    <div class = "vote-class">
+                         <button nbButton outline status="success" class = "vote"><nb-icon icon="arrow-circle-up"></nb-icon> Up Vote </button>
+                         <button nbButton outline status="danger" class = "vote"><nb-icon icon="arrow-circle-down"></nb-icon> Down Vote</button>
+                    </div>                    
+               </nb-card-body>
+          </nb-card>
+          <nb-card>
                <div class = "row">
                     <div class = "col-xxxl-6 col-xxl-12 col-md-7 ">
                          <div id="fluid-meter" class = "fluid"></div>
@@ -73,13 +84,24 @@
           <nb-card>
                <nb-card-body>
                     <div class = "donate">
-                         <input type="number" nbInput #amount fullWidth fieldSize = "large" placeholder="Amount of money you want to donate">
+                         <div>
+                              <input type="number" nbInput value = {{con}} fullWidth #amount fieldSize = "large" placeholder="Amount of money you want to donate">
+                         </div>
+                         <div class = "converter">
+                              <nb-select placeholder="Select Showcase" [(selected)]="curr">
+                                   <nb-option value="rupee">Rupee</nb-option>
+                                   <nb-option value="dollar">Dollar</nb-option>
+                              </nb-select>
+                              <input type="number" nbInput value = {{disp}} #xtz fieldSize = "large" placeholder="Amount of money you want to donate" readonly>
+                         </div>
+                         
                     </div>
                     <div class = "donate">
                          <input type="text" nbInput #comment fullWidth fieldSize = "large" placeholder="Comment your opinion">
                     </div>
                     <div class = "donate-button">
-                         <button nbButton status="success" (click) = "open(amount.value, comment.value)">Donate</button>
+                         <button nbButton status="success" (click) = "fund(amount.value, comment.value)">Fund</button>
+                         <button nbButton status = "info" (click) = "conditional(amount.value, comment.value)">Conditional Fund</button>
                     </div>
                </nb-card-body>
           </nb-card>

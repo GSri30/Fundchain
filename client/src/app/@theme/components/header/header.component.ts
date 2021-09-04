@@ -48,7 +48,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
-    this.user={name:sessionStorage.getItem('name'),picture:`assets/images/${sessionStorage.getItem('profilepicid')}.png`};
+    this.userService.getUsers()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users: any) => this.user = users.nick);
+
     // const { xl } = this.breakpointService.getBreakpointsMap();
     // this.themeService.onMediaQueryChange()
     //   .pipe(
@@ -102,7 +105,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if(!await this.taquito.is_connected()){
       this.wallet = false;
     }
-    this.userinfo.Wallet.next(this.wallet);
+    this.userinfo.Wallet.next(this.wallet);  
   }
 
   logout(){

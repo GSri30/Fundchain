@@ -1,13 +1,19 @@
+import { ConditionalFundDialogComponent } from './conditional-fund-dialog/conditional-fund-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FluidMeterComponent } from './fluid-meter/fluid-meter.component';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, Output, OnChanges, SimpleChange, Input, SimpleChanges } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import FluidMeter from '../../../js/js-fluid-meter.js';
 import {NbDialogService} from '@nebular/theme';
 import {TaquitoService} from '../../taquito.service';
 import {QrcodeComponent} from '../qrcode/qrcode.component'
 import { Base64 } from 'js-base64';
+import {secret} from '../../../environments/secret';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 
 interface OrganizationInfo{
   title: string, 
@@ -17,10 +23,12 @@ interface OrganizationInfo{
 @Component({
   selector: 'ngx-viewpost',
   templateUrl: './viewpost.component.html',
-  styleUrls: ['./viewpost.component.scss']
+  styleUrls: ['./viewpost.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewpostComponent implements OnInit {
+export class ViewpostComponent implements OnInit, OnChanges{
   constructor(
+    private cds: ChangeDetectorRef,
     private clipboardApi: ClipboardService,
     private dialogService: NbDialogService,
     private route: ActivatedRoute,
@@ -39,13 +47,50 @@ export class ViewpostComponent implements OnInit {
 
   OrgInfo: OrganizationInfo[] = [];
   @Output() puid:String;
+
+  xtz: any;
+  curr: string = "rupee";
+  con: any = 0;
+  disp: any = 0;
+
+  ngOnChanges(changes: SimpleChanges)
+  {
+      if(changes.curr.currentValue === 'dollar')
+      {
+          // this.disp = this.dollorTOtez(changes.con.currentValue);
+          this.disp += 1;
+          this.cds.detectChanges();
+
+      }
+      else if(changes.curr.currentValue === 'rupee')
+      {
+          // this.disp = this.inrTOtez(changes.con.currentValue);
+          this.disp += 2;
+          this.cds.detectChanges();
+      }
+  }
+
   async ngOnInit(): Promise<void> {
+    // fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
+    // .then(data=>{
+    //   this.xtz=(data["rates"].XTZ);
+    //   this.disp = this.inrTOtez(this.con);
+    // });
     const routeparams = this.route.snapshot.paramMap;
     this.puid = <String>routeparams.get('id');    
     this.remaining = this.Goal - this.reached;
     await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
   }
+
+  dollorTOtez(dollors){
+    return (dollors/this.xtz)*1000;
+  }
+
+  inrTOtez(inr){
+    return (inr/(this.xtz*73))*1000;
+  }
+
 
   CopyText(content: string)
   {
@@ -117,9 +162,8 @@ export class ViewpostComponent implements OnInit {
     // this.taqutio.send_fund(Base64.encode(sessionStorage.getItem('email'),true),this.puid,); 
   }
 
-  open(amount: number, comment: string)
+  fund(amount: number, comment: string)
   {
-    console.log('c');
     this.dialogService.open(ConfirmationDialogComponent, {
         context:{
           puid: this.puid as string,
@@ -127,7 +171,17 @@ export class ViewpostComponent implements OnInit {
           comment: comment,
         },
         closeOnBackdropClick: false,
-      });
-    console.log('dadsd');
+      })
+  }
+
+  conditional(amount: number, comment: string)
+  {
+      this.dialogService.open(ConditionalFundDialogComponent, {
+        context:{
+          puid: this.puid as string,
+          amount: amount,
+          comment: comment,
+        }
+      })
   }
 }
