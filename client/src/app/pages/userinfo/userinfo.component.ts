@@ -1,4 +1,3 @@
-import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
 import { UserinfoService } from "./userinfo.service";
 import { Base64 } from 'js-base64';
 
@@ -12,7 +11,6 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import {
-  NbDialogService,
   NbIconLibraries,
   NbMediaBreakpointsService,
   NbMenuService,
@@ -99,9 +97,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private cds: ChangeDetectorRef,
     private ad: ApplicationRef,
     private taquito: TaquitoService,
-    private iconsLibrary: NbIconLibraries,
-    private dialogService: NbDialogService,
-
+    private iconsLibrary: NbIconLibraries
   )
   {
     this.dataSource = this.dataSourceBuilder.create(this.data);
@@ -216,53 +212,13 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     await this.taquito.set_contract();
     var x = await this.taquito.check_claim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
     console.log(x);
-    var content : string;
-    if(x == 0){
-      await this.taquito.claim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
-    } 
-    else if(x==1){
-      content = "This fund is not mature. Please wait until the deadline of the cause!";
-    }
-    else if(x==2){
-      content = "This fund was already sent to the organization.";
-    }
-    else if(x==3){
-      content = "Transaction not found.";
-    }
-    else if(x==4){
-      content = "Already claimed."
-    }
-    this.dialogService.open(RefundDialogComponent, {
-      context:{
-        content : content
-      },
-    })
+    // if(x == 0) await this.taquito.claim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
   }
   async Reclaim(puid,trans_id){
     await this.taquito.set_contract();
     var x = await this.taquito.check_reclaim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
     console.log(x);
-    var content : string;
-    if(x == 0) {
-      await this.taquito.reclaim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
-    }
-    else if(x==1){
-      content = "This fund is not mature. Please wait until the deadline of the cause!";
-    }
-    else if(x==2){
-      content = "This fund was already sent to the organization.";
-    }
-    else if(x==3){
-      content = "Transaction not found.";
-    }
-    else if(x==4){
-      content = "Already claimed."
-    }
-    this.dialogService.open(RefundDialogComponent, {
-      context:{
-        content : content
-      },
-    })
+    if(x == 0) await this.taquito.reclaim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
   }
 }
 

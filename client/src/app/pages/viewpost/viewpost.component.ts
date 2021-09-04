@@ -29,7 +29,6 @@ interface OrganizationInfo{
 })
 export class ViewpostComponent implements OnInit{
   formerr: boolean = false;
-  lockedfunds: number;
   constructor(
     private cds: ChangeDetectorRef,
     private clipboardApi: ClipboardService,
@@ -47,6 +46,7 @@ export class ViewpostComponent implements OnInit{
   Name: String;
   Goal: number = 0;
   reached: number = 0;
+  remaining: number = 0;
   Wallet:boolean;
   OrgInfo: OrganizationInfo[] = [];
   @Output() puid:String;
@@ -55,8 +55,6 @@ export class ViewpostComponent implements OnInit{
   curr: string = "rupee";
   con: any = 0;
   disp: any = 0;
-  isVoted: boolean = false;
-  VoteConfirmation: boolean = false;
 
   async ngOnInit(): Promise<void> {
     //! Need to uncomment at the end!!
@@ -75,7 +73,7 @@ export class ViewpostComponent implements OnInit{
     });
     const routeparams = this.route.snapshot.paramMap;
     this.puid = <String>routeparams.get('id');
-    this.lockedfunds = 0;
+    this.remaining = this.Goal - this.reached;
     await this.getOrganizationDetails(this.puid);
     this.fluidMeter();
     this.cds.detectChanges();
@@ -129,22 +127,21 @@ export class ViewpostComponent implements OnInit{
   async getOrganizationDetails(puid)
   {
     await this.taqutio.set_contract();
-    var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description', 'Deadline'];
-    var Data = ['-', '-', '-', '-', '-','-'];
+    var titles = ['Name', 'Organization Type', 'Name of the Institution','Target Amount','Description'];
+    var Data = ['-', '-', '-', '-', '-'];
 
     const post:any = await this.taqutio.get_post(puid);
-    this.Name = Data[0];
-    this.puid = puid;
-    this.data = post.address;
-    this.Goal = Math.floor(post.goal/1000000);
-    this.reached = Math.floor(post.received_mutez/1000000);
-    this.lockedfunds = Math.floor(post.locked_fund/1000000);//change locked funds here
     Data[0] = post.name;
     Data[1] = post.post_type;
     Data[2] = post.institution;
-    Data[3] = this.Goal+" tez";
+    Data[3] = post.goal+" tez";
     Data[4] = post.description;
-    Data[5] = post.deadline;//add deadline here
+    this.Name = Data[0];
+    this.puid = puid;
+    this.data = post.address;
+    this.Goal = post.goal;
+    this.reached = post.received_mutez;
+    this.remaining = post.goal - post.received_mutez;
 
     for(let i=0; i<titles.length; i++)
     {
@@ -164,31 +161,17 @@ export class ViewpostComponent implements OnInit{
   async upvote()
   {
     await this.taqutio.set_contract();
-    this.isVoted = await this.taqutio.check_support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
-    this.cds.detectChanges();
-    if(this.isVoted == false)
-    {
-      await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
-      this.VoteConfirmation = true;
-      this.cds.detectChanges();
-    }    
+    await this.taqutio.support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
   }
   async downvote()
   {
     await this.taqutio.set_contract();
-    this.isVoted = await this.taqutio.check_support(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
-    this.cds.detectChanges();
-    if(this.isVoted == false)
-    {
-      await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
-      this.VoteConfirmation = true;
-      this.cds.detectChanges();
-    }
+    await this.taqutio.report(Base64.encode(sessionStorage.getItem('email'),true),this.puid);
   }
 
-  fund(amount: string, comment: string)
+  fund(amount: number, comment: string)
   {
-    if(amount=="0 tez"){
+    if(amount==0){
       this.formerr=true;
       return 0;
     }
@@ -198,16 +181,16 @@ export class ViewpostComponent implements OnInit{
     this.dialogService.open(ConfirmationDialogComponent, {
         context:{
           puid: this.puid as string,
-          amount: Math.floor(parseFloat(amount.substring(0,amount.length-4))*1000000) as number,
+          amount: amount,
           comment: comment,
         },
         closeOnBackdropClick: false,
       })
   }
 
-  conditional(amount: string, comment: string)
+  conditional(amount: number, comment: string)
   {
-    if(amount=="0 tez"){
+    if(amount==0){
       this.formerr=true;
       return 0;
     }
@@ -217,7 +200,7 @@ export class ViewpostComponent implements OnInit{
       this.dialogService.open(ConditionalFundDialogComponent, {
         context:{
           puid: this.puid as string,
-          amount: Math.floor(parseFloat(amount.substring(0,amount.length-4))*1000000) as number,
+          amount: amount,
           comment: comment,
         }
       })

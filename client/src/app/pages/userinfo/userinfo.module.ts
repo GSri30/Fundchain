@@ -20,7 +20,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ThemeModule } from '../../@theme/theme.module';
 
 import { FormsModule } from '@angular/forms';
-import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
 
 @NgModule({
   imports: [
@@ -42,8 +41,7 @@ import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
   ],
   declarations: [
    UserinfoComponent,
-   FsIconUIComponent,
-   RefundDialogComponent
+   FsIconUIComponent
   ],
 })
 export class UserinfoModule { }

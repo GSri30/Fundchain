@@ -131,14 +131,11 @@
                         </div>
                         <div style="margin-left: 50%; ">
                             <ng-container *ngIf=isDir(row.data.kind)>
-
                                 <ng-container *ngIf=isOut(row.data.parent)>
-                                    <p style="float: right;" *ngIf=!Wallet> Connect your wallet to reclaim!</p>
-                                    <button *ngIf=Wallet style="float: right;" nbButton status="primary" outline (click)="Reclaim(row.data.puid,row.data.transid)">Reclaim</button>
+                                    <button style="float: right;" nbButton status="primary" outline (click)="Reclaim(row.data.puid,row.data.transid)">Reclaim</button>
                                 </ng-container>
                                 <ng-container *ngIf=!isOut(row.data.parent)>
-                                    <p style="float: right;" *ngIf=!Wallet> Connect your wallet to claim!</p>
-                                    <button *ngIf=Wallet style="float: right;" nbButton status="primary" outline (click)="Claim(row.data.puid,row.data.transid)">Claim</button>
+                                    <button style="float: right;" nbButton status="primary" outline (click)="Claim(row.data.puid,row.data.transid)">Claim</button>
                                 </ng-container>
                             </ng-container>
                         </div>
