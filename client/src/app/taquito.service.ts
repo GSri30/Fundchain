@@ -12,7 +12,7 @@ import { Base64 } from 'js-base64';
 export class TaquitoService {
     private taquito: TezosToolkit = new TezosToolkit('https://florencenet.smartpy.io/');
     private wallet;
-    private contract_address = "KT1JYBYX7M3CJXm9K7n8z1DKmDqPyxCobhv7";
+    private contract_address = "KT19aanWDjGC2SzYCke8WTYrVLF3u17ZqM7m";
     private storage = undefined;
     private contract = undefined;
     constructor() {}
@@ -55,7 +55,9 @@ export class TaquitoService {
             tlist.push({data : {
                 Type : this.storage.posts.get(val.to_puid).name,
                 Amount : val.amount.c[0].toString(),
-                kind : 'doc'
+                kind : 'doc',
+                puid : val.to_puid,
+                transid : val.transid
                 }});
             i+=1;
         });
@@ -364,33 +366,43 @@ export class TaquitoService {
     // 1 : This fund is not mature. Please wait until the deadline of the cause!
     // 2 : This fund was already sent to the organization.
     // 3 : Transaction not found.
+    // 4 : Already claimed.
     public async check_reclaim(uuid,transid):Promise<number>
     {
-        const posts = await this.storage.posts;
+        var posts = {};
+        await this.storage.posts.forEach((val: any, key: string) => {
+            posts[key] = val;
+        });
+        
         var curr_date = new Date();
         if(this.storage == undefined) this.storage = this.contract.storage();        
+        var flag = 3;
+        
         await this.storage.transactions.get(uuid).forEach((val: any, key: string) => {
             if(val.transid == transid)
-            {
-                if(val.type == 1) return 2;
+            {   
+                if(val.type.c[0] == 1) flag = 4;
                 else{
-                    if(posts[val.to_puid].deadline <=  curr_date)
-                    {
+                    console.log(posts[val.to_puid].deadline);
+                    console.log(posts[val.to_puid].deadline <=  curr_date);
+                    if(posts[val.to_puid].deadline <=  curr_date.getDate())
+                    {   
                         if(posts[val.to_puid].downvotes.length >= val.downvotes)
                         {
-                            return 0;
+                            if(val.claimable == 1) flag = 0;
+                            else flag = 4;
                         }
-                        else return 2;
+                        else flag = 2;
                     }
                     else if(posts[val.to_puid].downvotes.length >= val.downvotes)
                     {
-                        return 0;
+                        flag = 0;
                     }
-                    return 1;
+                    else flag =  1;
                 }
             }
         });
-        return 3;
+        return flag;
     }
     
     // Check Claim
@@ -398,51 +410,60 @@ export class TaquitoService {
     // 1 : This fund is not mature. Please wait until the deadline of the cause!
     // 2 : This fund cannot be claimed as the donor set a low downvote threshold.
     // 3 : Transaction not found.
+    // 4 : Already claimed.
     public async check_claim(puid,transid):Promise<number>
     {
-        const posts = await this.storage.posts;
+        var posts = {};
+        await this.storage.posts.forEach((val: any, key: string) => {
+            posts[key] = val;
+        });
+        
         var curr_date = new Date();
         if(this.storage == undefined) this.storage = this.contract.storage();        
+        var flag = 3;
         await this.storage.transactions.get(puid).forEach((val: any, key: string) => {
             if(val.transid == transid)
             {
-                if(val.type == 1) return 2;
+                if(val.type == 1) flag = 2;
                 else{
                     if(posts[val.to_puid].deadline < curr_date)
                     {
                         if(posts[val.to_puid].downvotes.length < val.downvotes)
                         {
-                            return 0;
+                            // return 0;
+                            if(val.claimable == 1) flag = 0;
+                            else flag = 4;
                         }
-                        else return 2;
+                        else flag = 2;
                     }
                     else if(posts[val.to_puid].downvotes.length >= val.downvotes)
                     {
-                        return 2;
+                        flag = 2;
                     }
-                    else return 1;
+                    else flag = 1;
                 }
             }
         });
-        return 3;
+        return flag;
     }
 
-    public async reclaim_fund(puid,transid,uuid){
+    public async reclaim_fund(puid,uuid,transid){
         const userAddress = await this.wallet.getPKH();
-        const flag = await this.check_claim(puid,transid);
+        const flag = await this.check_reclaim(uuid,transid);
+        console.log(flag);
         if(flag == 0){
             const op = await this.contract.methods
-            .reclaim_fund(userAddress,puid,transid,uuid)
+            .reclaim(userAddress,puid,transid,uuid)
             .send();
             await op.confirmation();
         }
     }
 
     public async claim_fund(puid,uuid,transid){
-        const flag = await this.check_claim(uuid,transid);
+        const flag = await this.check_claim(puid,transid);
         if(flag == 0){
             const op = await this.contract.methods
-            .claim_fund(puid,transid,uuid)
+            .claim(puid,transid,uuid)
             .send();
             await op.confirmation();
         }

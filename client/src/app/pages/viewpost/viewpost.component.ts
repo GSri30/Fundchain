@@ -3,7 +3,7 @@ import { ConditionalFundDialogComponent } from './conditional-fund-dialog/condit
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FluidMeterComponent } from './fluid-meter/fluid-meter.component';
-import { Component, OnInit, Output, OnChanges, SimpleChange, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, SimpleChanges } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import FluidMeter from '../../../js/js-fluid-meter.js';
 import {NbDialogService} from '@nebular/theme';
@@ -27,7 +27,7 @@ interface OrganizationInfo{
   styleUrls: ['./viewpost.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewpostComponent implements OnInit, OnChanges{
+export class ViewpostComponent implements OnInit{
   formerr: boolean = false;
   constructor(
     private cds: ChangeDetectorRef,
@@ -56,29 +56,17 @@ export class ViewpostComponent implements OnInit, OnChanges{
   con: any = 0;
   disp: any = 0;
 
-  ngOnChanges(changes: SimpleChanges)
-  {
-      if(changes.curr.currentValue === 'dollar')
-      {
-          // this.disp = this.dollorTOtez(changes.con.currentValue);
-          this.disp += 1;
-          this.cds.detectChanges();
-
-      }
-      else if(changes.curr.currentValue === 'rupee')
-      {
-          // this.disp = this.inrTOtez(changes.con.currentValue);
-          this.disp += 2;
-          this.cds.detectChanges();
-      }
-  }
-
   async ngOnInit(): Promise<void> {
+    //! Need to uncomment at the end!!
+
     // fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
     // .then(data=>{
     //   this.xtz=(data["rates"].XTZ);
     //   this.disp = this.inrTOtez(this.con);
     // });
+
+    this.xtz=5.261685;
+
     this.userinfo.Wallet.subscribe((status) => {
       this.Wallet = status;
       this.cds.detectChanges();
@@ -91,12 +79,12 @@ export class ViewpostComponent implements OnInit, OnChanges{
     this.cds.detectChanges();
   }
 
-  dollorTOtez(dollors){
-    return (dollors/this.xtz)*1000;
+  dollorTOtez(dollors) : number{
+    return (dollors/this.xtz);
   }
 
-  inrTOtez(inr){
-    return (inr/(this.xtz*73))*1000;
+  inrTOtez(inr) : number{
+    return (inr/(this.xtz*73));
   }
 
 
@@ -225,5 +213,40 @@ export class ViewpostComponent implements OnInit, OnChanges{
     else{
       this.formerr=false;
     }
+    if(this.curr === 'dollar')
+      {
+          this.disp = this.dollorTOtez(amount)+" tez";
+          // this.disp = 1*amount;
+      }
+    else if(this.curr === 'rupee')
+      {
+          this.disp = this.inrTOtez(amount)+" tez";
+          // this.disp = 2*amount;
+          console.log(this.disp);
+      }
+      this.cds.detectChanges();
   }
+
+  change(amount:number,event:string){
+    if(amount == 0){
+      this.formerr=true;
+    }
+    else{
+      this.formerr=false;
+    }
+    if(event === 'dollar')
+      {
+          this.disp = this.dollorTOtez(amount) + " tez";
+          // this.disp = 1*amount;
+      }
+    else if(event === 'rupee')
+      {
+          this.disp = this.inrTOtez(amount) + " tez";
+          // this.disp = 2*amount;
+          console.log(this.disp);
+      }
+      this.cds.detectChanges();
+  }
+
+
 }

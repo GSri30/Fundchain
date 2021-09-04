@@ -208,11 +208,17 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     return parent === "Out";
   }
 
-  Claim(name){
-    console.log(name);
+  async Claim(puid,trans_id){
+    await this.taquito.set_contract();
+    var x = await this.taquito.check_claim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    console.log(x);
+    // if(x == 0) await this.taquito.claim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
   }
-  Reclaim(name){
-    console.log(name);
+  async Reclaim(puid,trans_id){
+    await this.taquito.set_contract();
+    var x = await this.taquito.check_reclaim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    console.log(x);
+    if(x == 0) await this.taquito.reclaim_fund(puid,Base64.encode(sessionStorage.getItem('email'),true),trans_id);
   }
 }
 
