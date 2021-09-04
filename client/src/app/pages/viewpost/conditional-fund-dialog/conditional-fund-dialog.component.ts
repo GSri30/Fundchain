@@ -28,6 +28,7 @@ export class ConditionalFundDialogComponent implements OnInit {
 
   async Okay(downvotes)
   {
+    this.ref.close();
     await this.taquito.set_contract();
     await this.taquito.send_fund_to_contract(Base64.encode(sessionStorage.getItem('email'),true),this.puid,this.amount,this.comment,downvotes);
   }
