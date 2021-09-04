@@ -11,7 +11,7 @@ import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTr
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit,CanActivate {
 
   title = 'angular-sawo-chander';
   Sawo: any;
@@ -32,17 +32,19 @@ export class LoginComponent implements OnInit {
     private appservice: AppService
   ) { }
 
-  // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-  //   if(this.isLoggedIn){
-  //     this.router.navigate([this.returnUrl], { queryParams: { isLoggedIn: this.isLoggedIn,email:this.email,uuid:this.uuid,name:this.name,profile_pic_number:this.profile_pic_number} });
-  //     return true;
-  //   }
-  //   this.router.navigate(['/login'], { queryParams: { returnUrl: state.url} });
-  //   return false;
-  // }
+   canActivate(route, state: RouterStateSnapshot) {
+    const check = sessionStorage.getItem("isLoggedin");
+    if(check == "true"){
+      return true;
+    }
+    this.router.navigate([''], { queryParams: { returnUrl: state.url} });
+    return false;
+  }
 
   ngOnInit(): void {
-
+    sessionStorage.clear();
+    localStorage.clear();
+    sessionStorage.setItem('isUpdate', 'true');
     console.log("hello");
     const sawoConfig = {
       containerID: this.container_id,
@@ -59,11 +61,19 @@ export class LoginComponent implements OnInit {
         // const uuid_decode=decode(uuid);
         this.name=(this.userPayload['customFieldInputValues']['Name']!='' ?this.userPayload['customFieldInputValues']['Name']:"Anonymous");
         this.profile_pic_number=this.name.length%7;
-        this.appservice.name.next(this.name);
-        this.appservice.email.next(this.email);
-        this.appservice.uuid.next(this.uuid);
-        this.appservice.profile_pic_number.next(this.profile_pic_number);
-
+        // this.appservice.name.next(this.name);
+        // this.appservice.email.next(this.email);
+        // this.appservice.uuid.next(this.uuid);
+        // this.appservice.profile_pic_number.next(this.profile_pic_number);
+        sessionStorage.setItem('name', this.name);
+        sessionStorage.setItem("isLoggedin", "true");
+        sessionStorage.setItem("email", this.email);
+        sessionStorage.setItem("uuid", this.uuid);
+        sessionStorage.setItem("profilepicid",this.profile_pic_number.toString());
+        if(this.isLoggedIn){
+          this.router.navigate(['/pages']);
+        }
+        
       }
     };
     this.Sawo = new Sawo(sawoConfig);

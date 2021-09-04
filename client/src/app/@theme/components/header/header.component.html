@@ -5,9 +5,9 @@
         </a>
 
         <a class="logo" href="#" (click)="navigateHome()">
-          <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;"><</span>
-          <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;font-weight: bold;padding: 0 10px;">FundChain</span>
-          <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;">/></span>
+            <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;"><</span>
+            <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;font-weight: bold;padding: 0 10px;">FundChain</span>
+            <span style="color:rgb(256,256,256);font-family: 'Dancing Script',cursive;">/></span>
         </a>
 
     </div>
@@ -27,5 +27,6 @@
     <ng-container *ngIf=wallet>
         <button nbButton status="danger" outline (click)="DisconnectWallet()">Disonnect Wallet</button>
     </ng-container>
+    <button nbButton status="danger" outline (click)="logout()">Logout</button>
 
 </div>

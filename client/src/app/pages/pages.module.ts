@@ -15,6 +15,7 @@ import { QrcodeComponent } from './qrcode/qrcode.component';
 import {ClipboardModule} from 'ngx-clipboard';
 import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 import { IpfsComponent } from './ipfs/ipfs.component';
+import { LoginComponent } from '../login/login.component';
 
 
 
@@ -41,6 +42,9 @@ import { IpfsComponent } from './ipfs/ipfs.component';
     QrcodeComponent,
     IpfsComponent,
   ],
+  providers: [
+    LoginComponent
+  ]
 })
 export class PagesModule {
 }
