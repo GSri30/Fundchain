@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("hello");
     const sawoConfig = {
       containerID: this.container_id,
       identifierType: "email",
