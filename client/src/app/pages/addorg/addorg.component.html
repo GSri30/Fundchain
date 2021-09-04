@@ -6,31 +6,33 @@
                 <nb-card-header>Create Organization</nb-card-header>
                 <nb-card-body>
                     <div class="full-name-inputs">
-                        <input type="text" nbInput #name fullWidth placeholder="Name of the cause">
-                        <input type="text" nbInput #institution fullWidth placeholder="Name of the Institution (if any)">
+                        <input type="text" nbInput fullWidth placeholder="Name of the cause">
+                        <input type="text" nbInput fullWidth placeholder="Name of the Institution (if any)">
                     </div>
-                    <textarea rows="5" nbInput #description fullWidth  shape="round" placeholder="Description"></textarea>
+                    <textarea rows="5" nbInput fullWidth shape="round" placeholder="Description"></textarea>
                     <div class="full-name-inputs">
-                        <input type="text" nbInput #goal placeholder="Goal to be reached">
+                        <input type="text" nbInput placeholder="Goal to be reached">
                         <nb-select placeholder="Currency">
                             <nb-option value="1">Rupees</nb-option>
                             <nb-option value="2">Dollars</nb-option>
                         </nb-select>
                     </div>
-                    <nb-select fullWidth [(ngModel)]="selectedOption" placeholder="Type of the organisation">
-                        <nb-option value="Education">Education</nb-option>
-                        <nb-option value="Start Ups">Start Ups</nb-option>
-                        <nb-option value="Old Age Homes">Old Age Homes</nb-option>
-                        <nb-option value="Health">Health</nb-option>
-                        <nb-option value="Rural Development">Rural Development</nb-option>
-                        <nb-option value="Nature">Nature</nb-option>
-                        <nb-option value="Farming">Farming</nb-option>
-                        <nb-option value="Others">Others</nb-option>
+
+                    <nb-select fullWidth placeholder="Type of the organisation">
+                        <nb-option value="1">Education</nb-option>
+                        <nb-option value="2">Start Ups</nb-option>
+                        <nb-option value="3">Old Age Homes</nb-option>
+                        <nb-option value="3">Health</nb-option>
+                        <nb-option value="3">Rural Development</nb-option>
+                        <nb-option value="3">Nature</nb-option>
+                        <nb-option value="3">Farming</nb-option>
+                        <nb-option value="3">Others</nb-option>
+
                     </nb-select>
                     <span>Select Image: </span>
                     <input nbInput #imageInput type="file" accept="image/*" multiple (change)="processFile(imageInput)">
                     <br>
-                    <button type="submit" (click) = "addOrg(name.value,description.value,goal.value,selectedOption,institution.value)" nbButton status="primary">Create</button>
+                    <button type="submit" nbButton status="primary">Create</button>
 
                 </nb-card-body>
             </nb-card>
