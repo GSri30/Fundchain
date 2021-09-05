@@ -1,54 +1,18 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
-***
-***
-***
-*** To avoid retyping too much info. Do a search and replace for the following:
-*** github_username, repo_name, twitter_handle, email, project_title, project_description
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
-<br />
+<h1> Fundchain : <small>A conditional fund raising platform<small></h1>
+
+A decentralized fundraising application using Tezos technology with its own consensus protocol. It can be used to donate and raise funds and also 'conditionally' funds. It also contains its own consensus algorithm (halfway implemented due to time constraint) which is similar to proof-of-stake, which is being designed to verify the fundraising organizations/individuals. These are elaborated in the upcoming sections.
+
+<br/>
+
 <p align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">project_title</h3>
-
+    <img src="assets/fundchain-bg1.jpg" width="60%">
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://fundchain.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/GSri30/Fundchain/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/GSri30/Fundchain/issues">Request Feature</a>
   </p>
 </p>
 
@@ -56,143 +20,184 @@
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <li><a href="#inspiration">Inspiration</a></li>
+    <li><a href="#about-the-project">About the project</a></li>
+    <li><a href="#technologies-used">Technologies used</a></li>
+    <li><a href="#how-we-built-it">How we built it</a></li>
+    <li><a href="#challenges-we-ran-into">Challenges we ran into</a></li>
+    <!-- <li><a href="#accomplishments-that-we're-proud-of">Accomplishments</a></li> -->
+    <li><a href="#whats-next-for-fundchain">What's next?</a></li>
+    <li><a href="#guide-to-setup-the-project-locally">Guide to setup the project locally</a></li>
+    <li><a href="#guide-to-try-out-our-dapp">Guide to try out our DApp</a></li>
+    <li><a href="#acknowledgements-and-references">Acknowledgements and References</a></li>
   </ol>
 </details>
 
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+## Inspiration
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+The major doubt almost everyone has before using a fundraising platform is how trustworthy are they? Is the funding amount reaching the needy? If so, how much of it? A lot of doubts arise when using such platforms.
 
-Here's a blank template to get started:
-**To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`github_username`, `repo_name`, `twitter_handle`, `email`, `project_title`, `project_description`
+Almost all the fundraising platforms that are in the market today, either collect some percent of the total funds the organizations receive or have their own premium plans for the users to use their platform. Also, almost all of these have a single point of failure workflow. Since platforms like these only require a mode of communication and fund transfer between two parties, eliminating the central power systems which act as a single point of failures i.e. there was a requirement to bring a decentralization in the whole process.
 
-
-### Built With
-
-* []()
-* []()
-* []()
+This is the major challenge Fundchain solves! We came up with the idea of a decentralized app that connects the donor to the needy directly without any involvement of a third party. In this system, since we’re relying on everyone, we effectively rely on no one.
 
 
+## About the project
 
-<!-- GETTING STARTED -->
-## Getting Started
+<p align="center">
+  <img src="assets/Final.jpg">
+<p align="center">
+    
+Fundchain is a decentralized application that directly connects the funders to the needy. The following are the key-words used in our project:
 
-To get a local copy up and running follow these simple steps.
+### Upvote-Downvote
+Each organization has an upvote feature for other users to show support and a downvote feature to report an organization as spam. A little amount of gas fee will used for using this feature.
+      
+### Conditional Fund
+There are two ways in which one can donate to these organizations. One way is to directly send the amount to the organization. But in this case, there is a slight risk factor as the organization may turn out to be a fake one. So to take fake organizations out of the equation the user may opt for conditional funding. In this type of funding, the number of downvotes plays a deciding role for an organization to be fake or genuine. Since marking an organization fake just by a fixed number of downvotes seems unfair, we let the donor fix this number. So the donor is asked the threshold number of downvotes at the time of donating. If the number of downvotes for the organization crosses the downvotes set by the donor, the donor may then choose to reclaim his money back. But the donor must be aware that he/she only gets 80% of the amount donated. The remaining 20% is redistributed to the field workers who spent their money to upvote or downvote the organization. 
+      
+### Claim-Reclaim
+When a user donates using the conditional fund feature, the amount is stored in the smart contract until the deadline of the organization is reached. If in between the number of downvotes has crossed the threshold set by the donor, he/she may reclaim their amount(80%). Else after the deadline is reached the organization will claim the amount which the donor has donated.   
 
-### Prerequisites
+<p align="center">
+<img src="assets/claim.png">
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+<p align="center">
+<img src="assets/reclaim.png">
 
-### Installation
+### XP mechanism
+There are two variants of XP for a user. 
+      <ui>
+          <li>XP as a Funder</li>
+          <li>XP as a Beneficiary</li>
+      </ui>
+#### XP as a Funder
+This is a proportional indicator of the amount donated by the user to different organizations. To be precise, a donor gains this type of XP which is equal to 10 times the amount he/she donates through direct funding and 5 times if he/she donates with the help of conditional funding.
 
-1. Clone the repo
+<p align="center">
+<img src="assets/xp_funder.png">
+
+#### XP as a Beneficiary
+This represents the reputation of the organization from the number of upvotes/downvotes and the number of goals reached through this organization. To be precise, for each upvote or downvote, the organization gains or loses 5 XP (of this type) respectively. Also, there is one more way to gain XP for an organization, that is through accomplishing the goals set by themselves. If an organization reaches its goal before the deadline, the organization gains one-tenth of the target amount.
+
+<p align="center">
+<img src="assets/xp_beneficiary.png">
+
+### Number of people upvoted or downvoted is not visible
+This ensures that the decision taken by the validator solely depends upon only himself and his verification work.
+
+### Motivation behind using SAWO labs
+
+Since our entire workflow is dependent upon a decentralized mechanism, a traditional login method using passwords wasn’t the best way. But this would certainly make the site vulnerable to spam. Also, we were required to map user email IDs with their wallet IDs (one to many mapping). 
+
+So there was a requirement of a way where we were required to ask users for their email ID and have appropriate auth mechanism (again not traditional login as the system was designed to be a decentralized system)
+
+So, we thought the best suit of an auth model in our workflow is to have some kind of a password-less login and at the same time need some mechanism to verify the email ID which user enters. After some research, we found SAWO labs api can be used to achieve the same! SAWO provides a way for the users to login without using a password and at the same time eliminates the spam using its own auth model.
+
+
+
+A list of all the references and resources we used to achieve (partially) our goal are listed in the acknowledgements.
+## Technologies used
+    
+<p align="center">
+<a href="https://tezos.com/"><img src="assets/tezos-bg.png"   width="40%" height="40%"></a>
+<p align="center" float="left">
+<a href="https://smartpy.io/"><img src="assets/smartpy.png" width="30%" height="30%"></a>
+<a href="https://angular.io/"><img src="assets/angular-bg.png"  width="30%" height="30%"></a>
+</p>
+<p align="center" float="left">
+<a href="https://ipfs.io/"><img src="assets/ipfs.png" width="30%" height="30%"></a>
+<a href="https://sawolabs.com/"><img src="assets/sawo.jpeg"  width="30%" height="30%"></a>
+</p>
+    
+💲  Tezos - Evolutionary, revolutionary, and everything in-between. <br/>
+📷 IPFS is a peer-to-peer hypermedia protocol designed to preserve and grow humanity's knowledge. <br/>
+🔐 SAWO is the only user-authentication tool that developers would crave for. <br/>
+
+## How we built it
+
+First we came up with a problem statement, then went in search of best blockchain technology that can be used. 
+Then we followed with building a basic prototype of all the features that can be included and also specifically brainstormed for an hour to find a suitable verification algorithm. 
+
+Then went with designing UI accordingly (with help of few resources mentioned in the last section). 
+
+
+## Challenges we ran into
+
+The frontend developers are only familiar with angular. So it took a while to build frontend.
+
+This is our first time to integrate SAWO labs with a web application.
+
+We had a very less time to finish the project.
+
+We intially thought of making a flutter app but were not able to proceed due to lack of resources.
+
+Our entire team is quite new to blockchain technology and this is our first attempt to make a DApp using blockchain technology. So choosing an appropriate blockchain for implementing our idea was very challenging. After brainstorming for some time, we found Tezos to be a suitable blockchain as it is a best suit for public distributed ledger applications as it has a unique on-chain governance mechanism.
+
+<!-- ## Accomplishments that we're proud of
+
+The 'Conditional Funding' is a unique feature of its own kind.
+
+We designed a complete consensus to have some kind of verification mechanism to avoid the misleading fund raisings. -->
+
+
+## What's next for Fundchain
+
+Due to the time constraint of the hackathon, many things were accomplished only till half way. These include :
+
+- Unique Digital Badges : We are planning to build a feature where after reaching a certain XP, we assign a unique digital badge as an NFT (using FA2) to the funder profile, representing his contributions. Also updating his/her avatar.
+- Field Workers : Currently the system doesn't contain any distinction between a normal funder and field worker.
+- CRON jobs : Introducing CRON jobs to automate the claims and re-claims (which are currently being triggered manually by a user using 'claim' and 'reclaim' options) based on either “deadline” or “number of dislikes” for a particular fund raising post.
+
+
+## Guide to setup the project locally
+
+Make sure you switch to node@12.22.1
+
+To install node@12.22.1
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+    nvm install 12.22.1
+
+    nvm use 12.22.1
    ```
-2. Install NPM packages
+Clone the repo
+   ```sh
+   git clone https://github.com/GSri30/Fundchain
+   ```
+Install NPM packages
    ```sh
    npm install
    ```
+Run the local server inside the client folder
+   ```sh
+   ng serve --open
+   ```
 
 
+## Guide to try out our DApp
 
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a list of proposed features (and known issues).
+To actually try out our DApp, there are certain requirements to set up, which include : 
+  * Install Temple wallet in your browser.
+  * Use a standard Tezos faucet to get Testnet ꜩ (required to pay gas, which is required to register an email) [NOTE that this is only a one time spend for a given email]
+    * Network : Flourence Testnet 
+    * RPC :  https://florencenet.smartpy.io/
+    * Lambda View : KT1BbTmNHmJp2NnQyw5qsAExEYmYuUpR2HdX
+  * Enjoy!
 
 
+## Acknowledgements and References
 
-<!-- CONTRIBUTING -->
-## Contributing
+* [Infura](https://infura.io/) standard IPFS API for getting access to the IPFS networks.
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+* <a href="https://coinlayer.com/">Coin Layer API </a> to get the live exchange rates of XTZ.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+* [ngx-admin](https://github.com/akveo/ngx-admin) for base angular components.
+
+* <a href='https://www.freepik.com/vectors/logo'>Logo vector created by pch.vector - www.freepik.com</a>
 
 
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-
-* []()
-* []()
-* []()
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/github_username
+* <a href="https://github.com/othneildrew/Best-README-Template"> README template </a>
