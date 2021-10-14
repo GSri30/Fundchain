@@ -1,5 +1,5 @@
 <!-- PROJECT LOGO -->
-<h1> Fundchain-dapp : <small>A conditional fund raising platform<small></h1>
+<h1> Fundchain : <small>A conditional fund raising platform<small></h1>
 
 A decentralized fundraising application using Tezos technology with its own consensus protocol. It can be used to donate and raise funds and also 'conditionally' funds. It also contains its own consensus algorithm (halfway implemented due to time constraint) which is similar to proof-of-stake, which is being designed to verify the fundraising organizations/individuals. These are elaborated in the upcoming sections.
 
@@ -8,7 +8,7 @@ A decentralized fundraising application using Tezos technology with its own cons
 <p align="center">
     <img src="assets/fundchain-bg1.jpg" width="60%">
   <p align="center">
-    <a href="https://fundchain-dapp.netlify.app/">View Demo</a>
+    <a href="https://fundchain.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/GSri30/Fundchain/issues">Report Bug</a>
     ·
@@ -164,7 +164,7 @@ To install node@12.22.1
    ```
 Clone the repo
    ```sh
-   git clone https://github.com/Dhamodhar-DDR/Fundchain-dapp
+   git clone https://github.com/GSri30/Fundchain
    ```
 Go to client folder
    ```sh
@@ -207,4 +207,4 @@ To actually try out our DApp, there are certain requirements to set up, which in
 
 ## Project Demo Pictures
 
-You can refer the sample shots our project [here](https://github.com/Dhamodhar-DDR/Fundchain-dapp/tree/main/images)
+You can refer the sample shots our project [here](https://github.com/GSri30/Fundchain/tree/main/images)
