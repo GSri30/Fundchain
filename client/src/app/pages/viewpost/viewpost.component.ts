@@ -61,13 +61,19 @@ export class ViewpostComponent implements OnInit{
   async ngOnInit(): Promise<void> {
     //! Need to uncomment at the end!!
 
-    fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`).then(response=>response.json())
-    .then(data=>{
-      this.xtz=(data["rates"].XTZ);
-      this.disp = this.inrTOtez(this.con);
-    });
+    // fetch(`http://api.coinlayer.com/api/live?access_key=${secret.COIN_LAYER}`,{
+    //   mode: 'cors',
+    //   headers:{
+    //     'Access-Control-Allow-Origin':'*'
+    //   }
+    // })
+    // .then(response=>response.json())
+    // .then(data=>{
+    //   this.xtz=(data["rates"].XTZ);
+    //   this.disp = this.inrTOtez(this.con);
+    // });
 
-    // this.xtz=5.261685;
+    this.xtz=5.261685;
 
     this.userinfo.Wallet.subscribe((status) => {
       this.Wallet = status;
@@ -219,7 +225,8 @@ export class ViewpostComponent implements OnInit{
           puid: this.puid as string,
           amount: Math.floor(parseFloat(amount.substring(0,amount.length-4))*1000000) as number,
           comment: comment,
-        }
+        },
+        closeOnBackdropClick: false,
       })
   }
 

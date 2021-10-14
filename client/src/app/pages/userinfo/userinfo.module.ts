@@ -12,7 +12,7 @@ import {
   NbIconModule,
 
 } from '@nebular/theme';
-import { NbInputModule, NbTreeGridModule } from '@nebular/theme';
+import { NbInputModule, NbTreeGridModule, NbTagModule } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -21,6 +21,7 @@ import { ThemeModule } from '../../@theme/theme.module';
 
 import { FormsModule } from '@angular/forms';
 import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
+import { ProfileinfoDialogComponent } from './profileinfo-dialog/profileinfo-dialog.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
     NbActionsModule,
     NbRadioModule,
     NbSelectModule,
+    NbTagModule,
     NbListModule,
     NbIconModule,
     NgxEchartsModule,
@@ -43,7 +45,8 @@ import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
   declarations: [
    UserinfoComponent,
    FsIconUIComponent,
-   RefundDialogComponent
+   RefundDialogComponent,
+   ProfileinfoDialogComponent
   ],
 })
 export class UserinfoModule { }

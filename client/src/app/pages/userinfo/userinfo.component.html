@@ -61,7 +61,7 @@
 
                 <nb-card>
                     <nb-card-header>
-                        <h5>Profile</h5>
+                        <h5>Profile  <button nbButton ghost (click) = "Open()"><nb-icon icon="question-mark-circle-outline"></nb-icon></button></h5>
                     </nb-card-header>
                     <nb-card-body>
                         <table class="table">
@@ -128,6 +128,9 @@
                         <div style="width: 50%; float: left;">
                             <ngx-fs-icon-ui [kind]="row.data.kind " [expanded]="row.expanded "></ngx-fs-icon-ui>
                             {{row.data[customColumn]}}
+                            <ng-container *ngIf=isDir(row.data.kind)>
+                                <nb-icon style="cursor: pointer" (click) = "link_to_post(row.data.puid)" icon="link-2-outline"></nb-icon>
+                            </ng-container>
                         </div>
                         <div style="margin-left: 50%; ">
                             <ng-container *ngIf=isDir(row.data.kind)>

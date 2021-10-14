@@ -1,6 +1,8 @@
+import { ProfileinfoDialogComponent } from './profileinfo-dialog/profileinfo-dialog.component';
 import { RefundDialogComponent } from './refund-dialog/refund-dialog.component';
 import { UserinfoService } from "./userinfo.service";
 import { Base64 } from 'js-base64';
+import { Router } from '@angular/router';
 
 import {
   Component,
@@ -101,6 +103,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
     private taquito: TaquitoService,
     private iconsLibrary: NbIconLibraries,
     private dialogService: NbDialogService,
+    private router : Router,
 
   )
   {
@@ -217,7 +220,7 @@ export class UserinfoComponent implements OnInit, OnDestroy {
 
   async Claim(puid,trans_id){
     await this.taquito.set_contract();
-    var x = await this.taquito.check_claim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
+    var x = await this.taquito.check_claim(puid,trans_id);
     console.log(x);
     var content : string;
     if(x == 0){
@@ -241,6 +244,13 @@ export class UserinfoComponent implements OnInit, OnDestroy {
       },
     })
   }
+
+  Open()
+  {
+    this.dialogService.open(ProfileinfoDialogComponent);
+
+  }
+
   async Reclaim(puid,trans_id){
     await this.taquito.set_contract();
     var x = await this.taquito.check_reclaim(Base64.encode(sessionStorage.getItem('email'),true),trans_id);
@@ -266,6 +276,9 @@ export class UserinfoComponent implements OnInit, OnDestroy {
         content : content
       },
     })
+  }
+  link_to_post(post_id){
+    this.router.navigate(['/main/viewpost/'+post_id]);
   }
 }
 
