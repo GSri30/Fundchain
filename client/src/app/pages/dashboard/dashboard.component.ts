@@ -125,7 +125,7 @@ export class DashboardComponent implements OnDestroy {
     this.GoalsReachedCard.count = await (await this.taquito.get_goals_reached()).toString();
     this.ContributorsCard.count = await (await this.taquito.get_total_donors()).toString();
     var count = await (await this.taquito.get_total_fund()).toString();
-    this.FundsReceivedCard.count = count + " tez"
+    this.FundsReceivedCard.count = count + " Tz"
     var post_list = await this.taquito.get_all_posts();
     let i =0;
     while(i<post_list.length)
