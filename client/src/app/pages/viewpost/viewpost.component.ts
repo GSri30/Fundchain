@@ -147,7 +147,7 @@ export class ViewpostComponent implements OnInit{
     Data[0] = post.name;
     Data[1] = post.post_type;
     Data[2] = post.institution;
-    Data[3] = this.Goal+" tez";
+    Data[3] = this.Goal+" Tz";
     Data[4] = post.description;
     Data[5] = post.deadline;//add deadline here
     this.Name = Data[0];
@@ -194,7 +194,7 @@ export class ViewpostComponent implements OnInit{
 
   fund(amount: string, comment: string)
   {
-    if(amount=="0 tez"){
+    if(amount=="0 Tz"){
       this.formerr=true;
       return 0;
     }
@@ -213,7 +213,7 @@ export class ViewpostComponent implements OnInit{
 
   conditional(amount: string, comment: string)
   {
-    if(amount=="0 tez"){
+    if(amount=="0 Tz"){
       this.formerr=true;
       return 0;
     }
@@ -239,12 +239,12 @@ export class ViewpostComponent implements OnInit{
     }
     if(this.curr === 'dollar')
       {
-          this.disp = this.dollorTOtez(amount)+" tez";
+          this.disp = this.dollorTOtez(amount)+" Tz";
           // this.disp = 1*amount;
       }
     else if(this.curr === 'rupee')
       {
-          this.disp = this.inrTOtez(amount)+" tez";
+          this.disp = this.inrTOtez(amount)+" Tz";
           // this.disp = 2*amount;
           console.log(this.disp);
       }
@@ -260,12 +260,12 @@ export class ViewpostComponent implements OnInit{
     }
     if(event === 'dollar')
       {
-          this.disp = this.dollorTOtez(amount) + " tez";
+          this.disp = this.dollorTOtez(amount) + " Tz";
           // this.disp = 1*amount;
       }
     else if(event === 'rupee')
       {
-          this.disp = this.inrTOtez(amount) + " tez";
+          this.disp = this.inrTOtez(amount) + " Tz";
           // this.disp = 2*amount;
           console.log(this.disp);
       }
